@@ -37,8 +37,8 @@ $ sudo add-apt-repository ppa:notepadqq-team/notepadqq;
 
 ### Install important tools
 ```sh
-$ sudo apt update;
-$ sudo apt install language-pack-en-base nano mlocate htop curl notepadqq preload inxi;
+sudo apt update;
+sudo apt install language-pack-en-base nano mlocate htop curl notepadqq preload inxi;
 ```
 
 ### Set correct locales
@@ -48,7 +48,9 @@ $ sudo nano /etc/default/locale;
 Now enter the following lines in this file and save it:
 
 > LANG=en_US.UTF-8
+>
 > LANGUAGE=en_US.UTF-8
+>
 > LC_ALL=en_US.UTF-8
 
 Once this is done you should reboot the chroot and verify all locales are setup correctly as en_US.UTF-8:
