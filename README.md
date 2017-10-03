@@ -176,3 +176,4 @@ If a new version of crouton came out, grab it and run:
 ```shell 
 $ sudo sh -e /tmp/crouton -n xenial -u;
 ```
+{{gist "5854601"}}
