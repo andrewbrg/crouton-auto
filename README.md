@@ -4,7 +4,9 @@
    
 ![3fa4bf29a8d83625909b76abb99537e9.jpg](http://pichoster.net/images/2017/10/03/3fa4bf29a8d83625909b76abb99537e9.jpg)
    
-**A few vital resources before getting started:**  
+This is a handy tutorial on setting up a dev machine on your chromebook, Crouton is developed and maintained by David Schneider https://github.com/dnschneid  
+
+**A few vital resources before getting started.** 
 
 | Type | Link |
 | ------ | ------ |
@@ -22,6 +24,8 @@ $ shell;
 $ cd /tmp;
 $ wget https://goo.gl/fd3zc -O crouton;
 ```
+
+Official Crouton repository is here: https://github.com/dnschneid/crouton 
 
 ### Install Linux 16.04 LTS via Crouton
 ```sh
