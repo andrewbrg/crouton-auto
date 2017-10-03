@@ -7,6 +7,7 @@
 | Crouton | https://github.com/dnschneid/crouton/wiki/Crouton-Command-Cheat-Sheet |
 | Crouton Extension | https://chrome.google.com/webstore/detail/crouton-integration/gcpneefbbnfalgjniomfjknbcgkbijom |
 
+
 After placing your Chromebook into developer mode, launch a terminal by CTRL+ALT+T then run the following commands:
 
 ### Get a fresh Crouton
@@ -36,7 +37,7 @@ $ sudo add-apt-repository ppa:notepadqq-team/notepadqq;
 ```
 
 ### Install important tools
-```sh
+```shell
 sudo apt update;
 sudo apt install language-pack-en-base nano mlocate htop curl notepadqq preload inxi;
 ```
