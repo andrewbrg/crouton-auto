@@ -2,18 +2,20 @@
 # Linux 16.04 Xenial on ChromeOS via Crouton
    
    
-![alt text](https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Google_Chrome_icon_and_wordmark_%282011%29.svg/280px-Google_Chrome_icon_and_wordmark_%282011%29.svg.png "Google ChromeOS")   ![alt text](https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Ubuntu_logo.svg/300px-Ubuntu_logo.svg.png "Ubuntu Gnome 16.04 LTS") 
+![3fa4bf29a8d83625909b76abb99537e9.jpg](http://pichoster.net/images/2017/10/03/3fa4bf29a8d83625909b76abb99537e9.jpg)
    
-| Resource | Link |
+**A few vital resources before getting started:**  
+
+| Type | Link |
 | ------ | ------ |
-| Crouton | https://github.com/dnschneid/crouton |
-| Cheat Sheet | https://github.com/dnschneid/crouton/wiki/Crouton-Command-Cheat-Sheet |
-| Wiki | https://github.com/dnschneid/crouton/wiki |
-| Chrome Extension | https://chrome.google.com/webstore/detail/crouton-integration/gcpneefbbnfalgjniomfjknbcgkbijom |
-
-
-After placing your Chromebook into developer mode, launch a terminal by CTRL+ALT+T then run the following commands:
+| Official Crouton Git | https://github.com/dnschneid/crouton |
+| Crouton Cheat Sheet | https://github.com/dnschneid/crouton/wiki/Crouton-Command-Cheat-Sheet |
+| Crouton Wiki | https://github.com/dnschneid/crouton/wiki |
+| Crouton Chrome Extension | https://chrome.google.com/webstore/detail/crouton-integration/gcpneefbbnfalgjniomfjknbcgkbijom |
+  
 ***
+  
+**Ready, Let's go!** After placing your Chromebook into developer mode, launch a terminal by `CTRL+ALT+T` then run the following commands:
 ### Get a fresh Crouton
 ```shell
 $ shell;
@@ -56,7 +58,7 @@ Now enter the following lines in this file and save it:
 > LANGUAGE=en_US.UTF-8    
 > LC_ALL=en_US.UTF-8    
 
-Once this is done you should reboot the chroot and verify all locales are setup correctly as en_US.UTF-8:
+Once this is done you should reboot the chroot and verify all locales are setup correctly as `en_US.UTF-8`
 ```shell
 $ exit;
 $ sudo enter-chroot;
