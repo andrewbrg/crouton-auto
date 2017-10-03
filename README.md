@@ -11,7 +11,7 @@
 After placing your Chromebook into developer mode, launch a terminal by CTRL+ALT+T then run the following commands:
 
 ### Get a fresh Crouton
-```sh
+```shell
 $ shell;
 $ cd /tmp;
 $ wget https://goo.gl/fd3zc -O crouton;
