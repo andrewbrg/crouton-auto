@@ -1,15 +1,19 @@
 
 # Linux 16.04 Xenial on ChromeOS via Crouton
-##
-
-| Plugin | README |
+   
+   
+![alt text](https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Google_Chrome_icon_and_wordmark_%282011%29.svg/280px-Google_Chrome_icon_and_wordmark_%282011%29.svg.png "Google ChromeOS")   ![alt text](https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Ubuntu_logo.svg/300px-Ubuntu_logo.svg.png "Ubuntu Gnome 16.04 LTS") 
+   
+| Resource | Link |
 | ------ | ------ |
-| Crouton | https://github.com/dnschneid/crouton/wiki/Crouton-Command-Cheat-Sheet |
-| Crouton Extension | https://chrome.google.com/webstore/detail/crouton-integration/gcpneefbbnfalgjniomfjknbcgkbijom |
+| Crouton | https://github.com/dnschneid/crouton |
+| Cheat Sheet | https://github.com/dnschneid/crouton/wiki/Crouton-Command-Cheat-Sheet |
+| Wiki | https://github.com/dnschneid/crouton/wiki |
+| Chrome Extension | https://chrome.google.com/webstore/detail/crouton-integration/gcpneefbbnfalgjniomfjknbcgkbijom |
 
 
 After placing your Chromebook into developer mode, launch a terminal by CTRL+ALT+T then run the following commands:
-
+***
 ### Get a fresh Crouton
 ```shell
 $ shell;
@@ -24,7 +28,7 @@ $ sudo sh /tmp/crouton -r xenial -t cli-extra,xorg,xiwi,extension,keyboard,audio
 
 ### Install prerequisites
 ```sh
-$sudo enter-chroot;
+$ sudo enter-chroot;
 $ sudo apt install locales software-properties-common python-software-properties;
 ```
 
@@ -48,15 +52,13 @@ $ sudo nano /etc/default/locale;
 ```
 Now enter the following lines in this file and save it:
 
-> LANG=en_US.UTF-8
->
-> LANGUAGE=en_US.UTF-8
->
-> LC_ALL=en_US.UTF-8
+> LANG=en_US.UTF-8    
+> LANGUAGE=en_US.UTF-8    
+> LC_ALL=en_US.UTF-8    
 
 Once this is done you should reboot the chroot and verify all locales are setup correctly as en_US.UTF-8:
 ```shell
-$exit;
+$ exit;
 $ sudo enter-chroot;
 $ locale;
 ```
@@ -87,7 +89,12 @@ $ sudo apt install node npm build-essential;
 
 ### Install Bower
 ```shell
-$ sudo npm install -g bower
+$ sudo npm install bower -g
+```
+
+### Install Gulp
+```shell
+$ sudo npm install gulp -g
 ```
 
 ### Install MeteorJS
@@ -176,4 +183,3 @@ If a new version of crouton came out, grab it and run:
 ```shell 
 $ sudo sh -e /tmp/crouton -n xenial -u;
 ```
-{{gist "5854601"}}
