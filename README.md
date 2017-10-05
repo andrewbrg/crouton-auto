@@ -74,7 +74,7 @@ locale;
 sudo apt dist-upgrade;
 sudo apt install numix-icon-theme-circle gnome-tweak-tool gnome-terminal whoopsie gnome-control-center gnome-online-accounts;
 sudo apt install gnome-shell-extension-dashtodock gnome-software gnome-software-common gnome-shell-pomodoro;
-sudo apt remove xterm netsurf netsurf-common netsurf-fb netsurf-gtk xserver-xorg-video-intel;
+sudo apt remove xterm netsurf netsurf-common netsurf-fb netsurf-gtk;
 ```
 
 ### Install PHP 7.0
@@ -89,7 +89,7 @@ sudo curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr
 
 ### Install NodeJS/NPM
 ```shell
-curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
 sudo apt install node npm build-essential;
 ```
 
