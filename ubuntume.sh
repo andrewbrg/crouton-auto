@@ -1,12 +1,17 @@
 #!/bin/bash
 
+###############################################################
+## Title helper
+###############################################################
 title() {
-    printf "\n\033[1;42m"
+    printf "\n"
+    printf "\033[1;42m"
     printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' ' '
     printf '%-*s\n' "${COLUMNS:-$(tput cols)}" "  # $1" | tr ' ' ' '
     printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' ' '
-    printf "\033[0m\n\n"
-    sleep .4
+    printf "\033[0m"
+    printf "\n\n"
+    sleep .5
 }
 
 ###############################################################
@@ -20,7 +25,7 @@ install() {
     bootstrapPath=`dirname $0`/xenial.tar.bz2
     downloadsPath=/home/chronos/user/Downloads
     chrootPath=/mnt/stateful_partition/crouton/chroots/xenial
-    targets=cli-extra,xorg,extension,keyboard,audio,chrome,gnome
+    targets=cli-extra,xorg,xiwi,extension,keyboard,audio,chrome,gnome
 
     # Move to the downloads folder, we'll work in here
     cd $downloadsPath
@@ -28,7 +33,6 @@ install() {
     # If no crouton file exists get it
     if [ ! -f $croutonPath ]; then
         title "Fetching latest crouton"
-        
         wget https://goo.gl/fd3zc -O crouton
     fi
     
@@ -135,15 +139,17 @@ configure() {
     sudo rm -rf PhpStorm-*/  
     sudo rm phpstorm.tar.gz  
     
-    title "Preparing locale settings..."
+    title "Cleaning up..."
     sudo echo "LANG=en_US.UTF-8" >> /etc/default/locale
     sudo echo "LANGUAGE=en_US.UTF-8" >> /etc/default/locale
     sudo echo "LC_ALL=en_US.UTF-8" >> /etc/default/locale
+    sudo sed 's/.*XKBMODEL.*/XKBMODEL="chromebook"/' /etc/default/keyboard
     
-    title "Cleaning up..."
     sudo apt remove -y xterm netsurf netsurf-common netsurf-fb netsurf-gtk
     sudo apt --purge autoremove -y  
     sudo updatedb 
+    
+    exit
 }
 
 inodeNum=`ls -id / | awk '{print $1}'`
@@ -151,5 +157,6 @@ if [ $inodeNum -eq 2 ];
     then 
         install
     else 
-        configure && sudo startgnome
+        configure
+        sudo startgnome   
 fi
