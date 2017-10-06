@@ -4,13 +4,13 @@
 ## Title helper
 ###############################################################
 title() {
-    printf "\n"
-    printf "\033[1;42m"
+    printf "\\n\\n"
+    printf "\\033[1;42m"
     printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' ' '
     printf '%-*s\n' "${COLUMNS:-$(tput cols)}" "  # $1" | tr ' ' ' '
     printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' ' '
-    printf "\033[0m"
-    printf "\n\n"
+    printf "\\033[0m"
+    printf "\\n"
     sleep .5
 }
 
@@ -149,7 +149,13 @@ configure() {
     sudo apt --purge autoremove -y  
     sudo updatedb 
     
-    exit
+    title "Finalise PHP Storm..."
+    cd /usr/local/bin/phpstorm/bin  
+    xiwi ./phpstorm.sh  
+
+    title "Finalise Robomongo..."
+    cd /usr/local/bin/robomongo/bin  
+    xiwi ./robo3t 
 }
 
 inodeNum=`ls -id / | awk '{print $1}'`
