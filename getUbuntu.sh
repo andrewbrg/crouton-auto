@@ -96,12 +96,19 @@ cRepos() {
     sudo add-apt-repository -y ppa:gnome3-team/gnome3-staging
     sudo add-apt-repository -y ppa:gnome3-team/gnome3
     sudo add-apt-repository -y ppa:notepadqq-team/notepadqq
+    
+    sudo apt install -y curl apt-transport-https ca-certificates
+    
     sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6
     sudo echo "deb [ arch=amd64,arm64 ] http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.4 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.4.list
-    sudo apt install -y curl
+    
     curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
     sudo mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
     sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
+    
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    sudo add-apt-repository -y "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+    
     sudo apt update -y
     breakLine
 }
@@ -181,6 +188,14 @@ cGit() {
     title "Git"
     if [ "$(askUser "Install Git")" -eq 1 ]; then
         sudo apt install -y git
+    fi
+    breakLine
+}
+
+cDocker() {
+    title "Docker"
+    if [ "$(askUser "Install Docker")" -eq 1 ]; then
+        sudo apt install -y docker-ce
     fi
     breakLine
 }
@@ -303,6 +318,7 @@ configure() {
     cNodejs;
     cNginx;
     cGit;
+    cDocker;
     cMysql;
     cMongodb;
     cVscodeide;
