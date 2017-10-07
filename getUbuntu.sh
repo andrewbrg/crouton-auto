@@ -65,8 +65,8 @@ install() {
         fi
         
         # Setup Ubuntu
-        title "Installing Ubuntu 16.04LTS in chroot"
-        if [ "$(askUser "Install Ubuntu 16.04LTS")" -eq 1 ]; then
+        title "Ubuntu 16.04 on Chromebook"
+        if [ "$(askUser "Install Ubuntu 16.04 LTS (xenial)")" -eq 1 ]; then
             sudo sh $croutonPath -f $bootstrapPath -t $targets
         fi
         breakLine
@@ -77,8 +77,6 @@ install() {
     
     # Get chroot username
     chrootUsername=`ls $chrootPath/home/ | awk '{print $1}'`
-    sudo cp $selfPath $chrootPath/home/$chrootUsername/Downloads/$selfName
-    sudo chmod +x $chrootPath/home/$chrootUsername/Downloads/$selfName
     sudo enter-chroot -n xenial -l sh /home/$chrootUsername/Downloads/$selfName
     breakLine
 }
@@ -122,7 +120,7 @@ cClean() {
     sudo echo "LANG=en_US.UTF-8" >> /etc/default/locale
     sudo echo "LANGUAGE=en_US.UTF-8" >> /etc/default/locale
     sudo echo "LC_ALL=en_US.UTF-8" >> /etc/default/locale
-    sudo sed 's/.*XKBMODEL.*/XKBMODEL="chromebook"/' /etc/default/keyboard
+    sudo sed -i "s/XKBMODEL=.*/XKBMODEL=\"chromebook\"/g" /etc/default/keyboard
     
     sudo apt remove -y xterm netsurf netsurf-common netsurf-fb netsurf-gtk
     sudo apt --purge autoremove -y
@@ -163,8 +161,8 @@ cNodejs() {
         fi
         
         breakLine
-        title "Meteor JS"
-        if [ "$(askUser "Install MeteorJS")" -eq 1 ]; then
+        title "Meteor.JS"
+        if [ "$(askUser "Install Meteor.js")" -eq 1 ]; then
             sudo curl https://install.meteor.com/ | sh
         fi
     fi
@@ -224,6 +222,21 @@ cMongodb() {
             sudo rm -rf robo3t-*/
             sudo rm $robomongoPath/lib/libstdc++*
             sudo chmod +x $robomongoPath/bin/robo3t
+            
+            local robomongoDesktopPath=/usr/share/applications/robomongo.desktop
+            
+            if [ ! -f $robomongoDesktopPath ]; then
+                sudo touch $robomongoDesktopPath
+            fi
+            
+            sudo truncate --size 0 $robomongoDesktopPath
+            sudo echo "[Desktop Entry]" >> $robomongoDesktopPath
+            sudo echo "Name=Robomongo" >> $robomongoDesktopPath
+            sudo echo "Comment=MongoDB Database Administration" >> $robomongoDesktopPath
+            sudo echo "Exec=/usr/local/bin/robomongo/bin/robo3t" >> $robomongoDesktopPath
+            sudo echo "Terminal=false" >> $robomongoDesktopPath
+            sudo echo "Type=Application" >> $robomongoDesktopPath
+            sudo echo "Icon=robomongo" >> $robomongoDesktopPath
         fi
   fi
   breakLine
@@ -252,16 +265,40 @@ cPhpstorm() {
         sudo mv PhpStorm-*/* $phpstormPath
         sudo rm -rf PhpStorm-*/
         sudo rm phpstorm.tar.gz
+        
+        local phpstormDesktopPath=/usr/share/applications/phpstorm.desktop
+            
+        if [ ! -f $phpstormDesktopPath ]; then
+            sudo touch $phpstormDesktopPath
+        fi
+        
+        sudo echo "[Desktop Entry]" >> $phpstormDesktopPath
+        sudo echo "Version=1.0" >> $phpstormDesktopPath
+        sudo echo "Type=Application" >> $phpstormDesktopPath
+        sudo echo "Name=PhpStorm" >> $phpstormDesktopPath
+        sudo echo "Icon=phpstorm" >> $phpstormDesktopPath
+        sudo echo "Exec=\"/usr/local/bin/phpstorm/bin/phpstorm.sh\" %f" >> $phpstormDesktopPath
+        sudo echo "Comment=The Drive to Develop" >> $phpstormDesktopPath
+        sudo echo "Categories=Development;IDE;" >> $phpstormDesktopPath
+        sudo echo "Terminal=false" >> $phpstormDesktopPath
     fi
     breakLine
 }
 
 configure() {
     
-    cPrerequisites;
-    cRepos;
-    cUi;
+    # Set the home variable
+    export HOME=/home/`ls /home/ | awk '{print $1}'`
     
+    # OS setup
+    local isOsSetup=`dpkg -l | grep preload | awk '{print $1}'`
+    if [ "$isOsSetup" = "" ]; then
+        cPrerequisites;
+        cRepos;
+        cUi;
+    fi
+    
+    # Apps setup
     cPhp;
     cNodejs;
     cNginx;
@@ -272,8 +309,10 @@ configure() {
     cPhpstorm;
     
     cClean;
+    exit;
 }
 
+clear
 inodeNum=`ls -id / | awk '{print $1}'`
 if [ $inodeNum -eq 2 ];
     then
