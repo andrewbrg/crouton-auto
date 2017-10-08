@@ -1,16 +1,18 @@
 #!/bin/bash
 
-# Prepare vars
-selfName=`basename $0`
-selfPath=`dirname $0`/${selfName}
-croutonPath=`dirname $0`/crouton
-phpstormPath=/usr/local/bin/phpstorm
-inodeNum=`ls -id / | awk '{print $1}'`
-robomongoPath=/usr/local/bin/robomongo
-bootstrapPath=`dirname $0`/xenial.tar.bz2
-downloadsPath=/home/chronos/user/Downloads
-chrootPath=/mnt/stateful_partition/crouton/chroots/xenial
-targets=cli-extra,xorg,xiwi,extension,keyboard,audio,chrome,gnome
+###############################################################
+## GLOBALS
+###############################################################
+SELF_NAME=`basename $0`
+SELF_PATH=`dirname $0`/${SELF_NAME}
+CROUTON_PATH=`dirname $0`/crouton
+PHPSTORM_PATH=/usr/local/bin/phpstorm
+INODE_NUM=`ls -id / | awk '{print $1}'`
+ROBO_MONGO_PATH=/usr/local/bin/robomongo
+BOOTSTRAP_PATH=`dirname $0`/xenial.tar.bz2
+DOWNLOADS_PATH=/home/chronos/user/Downloads
+CHROOT_PATH=/mnt/stateful_partition/crouton/chroots/xenial
+TARGETS=cli-extra,xorg,xiwi,extension,keyboard,audio,chrome,gnome
     
     
 ###############################################################
@@ -42,33 +44,34 @@ askUser() {
     done
 }
 
+
 ###############################################################
 ## Installation
 ###############################################################
 install() {
     # Move to the downloads folder, we'll work in here
-    cd ${downloadsPath}
+    cd ${DOWNLOADS_PATH}
 
     # If no crouton file exists get it
-    if [ ! -f ${croutonPath} ]; then
+    if [ ! -f ${CROUTON_PATH} ]; then
         title "Fetching latest crouton"
         wget https://goo.gl/fd3zc -O crouton
         breakLine
     fi
     
     # If no chroot is setup
-    if [ ! -d ${chrootPath} ]; then
+    if [ ! -d ${CHROOT_PATH} ]; then
         # Prepare a bootstrap
-        if [ ! -f ${bootstrapPath} ]; then
+        if [ ! -f ${BOOTSTRAP_PATH} ]; then
             title "Preparing an Ubuntu bootstrap"
-            sudo sh ${croutonPath} -d -f ${bootstrapPath} -r xenial -t ${targets}
+            sudo sh ${CROUTON_PATH} -d -f ${BOOTSTRAP_PATH} -r xenial -t ${TARGETS}
             breakLine
         fi
         
         # Setup Ubuntu
         title "Ubuntu 16.04 on Chromebook"
         if [ "$(askUser "Install Ubuntu 16.04 LTS (xenial)")" -eq 1 ]; then
-            sudo sh ${croutonPath} -f ${bootstrapPath} -t ${targets}
+            sudo sh ${CROUTON_PATH} -f ${BOOTSTRAP_PATH} -t ${TARGETS}
         fi
         breakLine
     fi
@@ -77,8 +80,8 @@ install() {
     title "Mounting chroot"
     
     # Get chroot username
-    chrootUsername=`ls ${chrootPath}/home/ | awk '{print $1}'`
-    sudo enter-chroot -n xenial -l sh /home/${chrootUsername}/Downloads/${selfName}
+    CHROOT_USERNAME=`ls ${CHROOT_PATH}/home/ | awk '{print $1}'`
+    sudo enter-chroot -n xenial -l sh /home/${CHROOT_USERNAME}/Downloads/${SELF_NAME}
     breakLine
 }
 
@@ -156,7 +159,7 @@ cPhp() {
     breakLine
 }
 
-cNodejs() {
+cNodeJs() {
     title "Node JS"
     if [ "$(askUser "Install NodeJS")" -eq 1 ]; then
         curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
@@ -172,6 +175,12 @@ cNodejs() {
         title "Gulp"
         if [ "$(askUser "Install Gulp")" -eq 1 ]; then
             sudo npm install -y gulp -g
+        fi
+
+        breakLine
+        title "Nodemon"
+        if [ "$(askUser "Install Nodemon")" -eq 1 ]; then
+            sudo npm install -y nodemon -g
         fi
         
         breakLine
@@ -195,17 +204,17 @@ cNginx() {
     if [ "$(askUser "Install Nginx")" -eq 1 ]; then
         sudo apt install -y nginx
         
-        local nginxPath=/etc/systemd/system/nginx.service 
-        if [ -f ${nginxPath} ]; then
-            sudo rm ${nginxPath}
+        local NGINX_SERVICE_PATH=/etc/systemd/system/nginx.service
+        if [ -f ${NGINX_SERVICE_PATH} ]; then
+            sudo rm ${NGINX_SERVICE_PATH}
         fi
         
-        sudo cp /lib/systemd/system/nginx.service ${nginxPath}
-        sudo sed -i "s/PIDFile=.*/PIDFile=\/run\/nginx.pid/g" ${nginxPath}
-        sudo sed -i "s/ExecStartPre=.*/ExecStartPre=\/usr\/sbin\/nginx -t -q -g 'daemon on; master_process on;'/g" ${nginxPath}
-        sudo sed -i "s/ExecStart=.*/ExecStart=\/usr\/sbin\/nginx -g 'daemon on; master_process on;'/g" ${nginxPath}
-        sudo sed -i "s/ExecReload=.*/ExecReload=\/usr\/bin\/chroot --userspec=http:http \/srv\/http \/usr\/bin\/nginx -g 'pid \/run\/nginx.pid; daemon on; master_process on;' -s reload/g" ${nginxPath}
-        sudo sed -i "s/ExecStop=.*/ExecStop=\/usr\/bin\/chroot --userspec=http:http \/srv\/http \/usr\/bin\/nginx -g 'pid \/run\/nginx.pid;' -s quit/g" ${nginxPath}
+        sudo cp /lib/systemd/system/nginx.service ${NGINX_SERVICE_PATH}
+        sudo sed -i "s/PIDFile=.*/PIDFile=\/run\/nginx.pid/g" ${NGINX_SERVICE_PATH}
+        sudo sed -i "s/ExecStartPre=.*/ExecStartPre=\/usr\/sbin\/nginx -t -q -g 'daemon on; master_process on;'/g" ${NGINX_SERVICE_PATH}
+        sudo sed -i "s/ExecStart=.*/ExecStart=\/usr\/sbin\/nginx -g 'daemon on; master_process on;'/g" ${NGINX_SERVICE_PATH}
+        sudo sed -i "s/ExecReload=.*/ExecReload=\/usr\/bin\/chroot --userspec=http:http \/srv\/http \/usr\/bin\/nginx -g 'pid \/run\/nginx.pid; daemon on; master_process on;' -s reload/g" ${NGINX_SERVICE_PATH}
+        sudo sed -i "s/ExecStop=.*/ExecStop=\/usr\/bin\/chroot --userspec=http:http \/srv\/http \/usr\/bin\/nginx -g 'pid \/run\/nginx.pid;' -s quit/g" ${NGINX_SERVICE_PATH}
     fi
     breakLine
 }
@@ -226,7 +235,7 @@ cDocker() {
     breakLine
 }
 
-cMysql() {
+cMySql() {
     title "MySQL Server"
     if [ "$(askUser "Install MySQL Server")" -eq 1 ]; then
         sudo apt install -y mysql-server
@@ -240,7 +249,7 @@ cMysql() {
     breakLine
 }
 
-cMongodb() {
+cMongoDb() {
     title "MongoDB"
     if [ "$(askUser "Install MongoDB server")" -eq 1 ]; then
         sudo apt install -y mongodb-org
@@ -252,38 +261,38 @@ cMongodb() {
             cd /tmp
             wget https://download.robomongo.org/1.1.1/linux/robo3t-1.1.1-linux-x86_64-c93c6b0.tar.gz -O robomongo.tar.gz
             
-            if [ -d ${robomongoPath} ]; then
-                sudo rm -rf ${robomongoPath}
+            if [ -d ${ROBO_MONGO_PATH} ]; then
+                sudo rm -rf ${ROBO_MONGO_PATH}
             fi
             
-            sudo mkdir ${robomongoPath}
+            sudo mkdir ${ROBO_MONGO_PATH}
             sudo tar xf robomongo.tar.gz
             sudo rm robomongo.tar.gz
-            sudo mv robo3t-*/* ${robomongoPath}
+            sudo mv robo3t-*/* ${ROBO_MONGO_PATH}
             sudo rm -rf robo3t-*/
-            sudo rm ${robomongoPath}/lib/libstdc++*
-            sudo chmod +x ${robomongoPath}/bin/robo3t
+            sudo rm ${ROBO_MONGO_PATH}/lib/libstdc++*
+            sudo chmod +x ${ROBO_MONGO_PATH}/bin/robo3t
             
-            local robomongoDesktopPath=/usr/share/applications/robomongo.desktop
+            local ROBO_MONGO_LAUNCHER_PATH=/usr/share/applications/robomongo.desktop
             
-            if [ ! -f ${robomongoDesktopPath} ]; then
-                sudo touch ${robomongoDesktopPath}
+            if [ ! -f ${ROBO_MONGO_LAUNCHER_PATH} ]; then
+                sudo touch ${ROBO_MONGO_LAUNCHER_PATH}
             fi
             
-            sudo truncate --size 0 ${robomongoDesktopPath}
-            sudo echo "[Desktop Entry]" >> ${robomongoDesktopPath}
-            sudo echo "Name=Robomongo" >> ${robomongoDesktopPath}
-            sudo echo "Comment=MongoDB Database Administration" >> ${robomongoDesktopPath}
-            sudo echo "Exec=/usr/local/bin/robomongo/bin/robo3t" >> ${robomongoDesktopPath}
-            sudo echo "Terminal=false" >> ${robomongoDesktopPath}
-            sudo echo "Type=Application" >> ${robomongoDesktopPath}
-            sudo echo "Icon=robomongo" >> ${robomongoDesktopPath}
+            sudo truncate --size 0 ${ROBO_MONGO_LAUNCHER_PATH}
+            sudo echo "[Desktop Entry]" >> ${ROBO_MONGO_LAUNCHER_PATH}
+            sudo echo "Name=Robomongo" >> ${ROBO_MONGO_LAUNCHER_PATH}
+            sudo echo "Comment=MongoDB Database Administration" >> ${ROBO_MONGO_LAUNCHER_PATH}
+            sudo echo "Exec=/usr/local/bin/robomongo/bin/robo3t" >> ${ROBO_MONGO_LAUNCHER_PATH}
+            sudo echo "Terminal=false" >> ${ROBO_MONGO_LAUNCHER_PATH}
+            sudo echo "Type=Application" >> ${ROBO_MONGO_LAUNCHER_PATH}
+            sudo echo "Icon=robomongo" >> ${ROBO_MONGO_LAUNCHER_PATH}
         fi
   fi
   breakLine
 }
 
-cVscodeide() {
+cVsCodeIde() {
     title "Microsoft VS Code IDE"
     if [ "$(askUser "Install Microsoft VS Code IDE")" -eq 1 ]; then
         sudo apt install -y code
@@ -291,7 +300,7 @@ cVscodeide() {
     breakLine
 }
 
-cPopcorntime() {
+cPopcornTime() {
     title "Popcorn Time"
     if [ "$(askUser "Install Popcorn Time")" -eq 1 ]; then
         if [ ! -d /opt/popcorn-time ]; then
@@ -302,57 +311,57 @@ cPopcorntime() {
         sudo wget -qO- https://get.popcorntime.sh/build/Popcorn-Time-0.3.10-Linux-64.tar.xz | sudo tar Jx -C /opt/popcorn-time
         sudo ln -sf /opt/popcorn-time/Popcorn-Time /usr/bin/popcorn-time
         
-        local popcornTimeDesktopPath=/usr/share/applications/popcorntime.desktop
+        local POPCORN_TIME_LAUNCHER_PATH=/usr/share/applications/popcorntime.desktop
             
-        if [ ! -f ${popcornTimeDesktopPath} ]; then
-            sudo touch ${popcornTimeDesktopPath}
+        if [ ! -f ${POPCORN_TIME_LAUNCHER_PATH} ]; then
+            sudo touch ${POPCORN_TIME_LAUNCHER_PATH}
         fi
         
-        sudo truncate --size 0 ${popcornTimeDesktopPath}
-        sudo echo "[Desktop Entry]" >> ${popcornTimeDesktopPath}
-        sudo echo "Version=1.0" >> ${popcornTimeDesktopPath}
-        sudo echo "Terminal=false" >> ${popcornTimeDesktopPath}
-        sudo echo "Type=Application" >> ${popcornTimeDesktopPath}
-        sudo echo "Name=Popcorn Time" >> ${popcornTimeDesktopPath}
-        sudo echo "Icon=phpstorm" >> ${popcornTimeDesktopPath}
-        sudo echo "Exec=/usr/bin/popcorn-time" >> ${popcornTimeDesktopPath}
-        sudo echo "Categories=Application;" >> ${popcornTimeDesktopPath}
+        sudo truncate --size 0 ${POPCORN_TIME_LAUNCHER_PATH}
+        sudo echo "[Desktop Entry]" >> ${POPCORN_TIME_LAUNCHER_PATH}
+        sudo echo "Version=1.0" >> ${POPCORN_TIME_LAUNCHER_PATH}
+        sudo echo "Terminal=false" >> ${POPCORN_TIME_LAUNCHER_PATH}
+        sudo echo "Type=Application" >> ${POPCORN_TIME_LAUNCHER_PATH}
+        sudo echo "Name=Popcorn Time" >> ${POPCORN_TIME_LAUNCHER_PATH}
+        sudo echo "Icon=phpstorm" >> ${POPCORN_TIME_LAUNCHER_PATH}
+        sudo echo "Exec=/usr/bin/popcorn-time" >> ${POPCORN_TIME_LAUNCHER_PATH}
+        sudo echo "Categories=Application;" >> ${POPCORN_TIME_LAUNCHER_PATH}
     fi
     breakLine   
 }
 
-cPhpstorm() {
+cPhpStormIde() {
     title "PHP Storm IDE"
     if [ "$(askUser "Install PHP Storm IDE")" -eq 1 ]; then
         cd /tmp
         wget https://download.jetbrains.com/webide/PhpStorm-2017.2.4.tar.gz -O phpstorm.tar.gz
         sudo tar xf phpstorm.tar.gz
         
-        if [ -d ${phpstormPath} ]; then
-            sudo rm -rf ${phpstormPath}
+        if [ -d ${PHPSTORM_PATH} ]; then
+            sudo rm -rf ${PHPSTORM_PATH}
         fi
         
-        sudo mkdir ${phpstormPath}
-        sudo mv PhpStorm-*/* ${phpstormPath}
+        sudo mkdir ${PHPSTORM_PATH}
+        sudo mv PhpStorm-*/* ${PHPSTORM_PATH}
         sudo rm -rf PhpStorm-*/
         sudo rm phpstorm.tar.gz
         
-        local phpstormDesktopPath=/usr/share/applications/phpstorm.desktop
+        local PHPSTORM_LAUNCHER_PATH=/usr/share/applications/phpstorm.desktop
             
-        if [ ! -f ${phpstormDesktopPath} ]; then
-            sudo touch ${phpstormDesktopPath}
+        if [ ! -f ${PHPSTORM_LAUNCHER_PATH} ]; then
+            sudo touch ${PHPSTORM_LAUNCHER_PATH}
         fi
         
-        sudo truncate --size 0 ${phpstormDesktopPath}
-        sudo echo "[Desktop Entry]" >> ${phpstormDesktopPath}
-        sudo echo "Version=1.0" >> ${phpstormDesktopPath}
-        sudo echo "Type=Application" >> ${phpstormDesktopPath}
-        sudo echo "Name=PhpStorm" >> ${phpstormDesktopPath}
-        sudo echo "Icon=phpstorm" >> ${phpstormDesktopPath}
-        sudo echo "Exec=\"/usr/local/bin/phpstorm/bin/phpstorm.sh\" %f" >> ${phpstormDesktopPath}
-        sudo echo "Comment=The Drive to Develop" >> ${phpstormDesktopPath}
-        sudo echo "Categories=Development;IDE;" >> ${phpstormDesktopPath}
-        sudo echo "Terminal=false" >> ${phpstormDesktopPath}
+        sudo truncate --size 0 ${PHPSTORM_LAUNCHER_PATH}
+        sudo echo "[Desktop Entry]" >> ${PHPSTORM_LAUNCHER_PATH}
+        sudo echo "Version=1.0" >> ${PHPSTORM_LAUNCHER_PATH}
+        sudo echo "Type=Application" >> ${PHPSTORM_LAUNCHER_PATH}
+        sudo echo "Name=PhpStorm" >> ${PHPSTORM_LAUNCHER_PATH}
+        sudo echo "Icon=phpstorm" >> ${PHPSTORM_LAUNCHER_PATH}
+        sudo echo "Exec=\"/usr/local/bin/phpstorm/bin/phpstorm.sh\" %f" >> ${PHPSTORM_LAUNCHER_PATH}
+        sudo echo "Comment=The Drive to Develop" >> ${PHPSTORM_LAUNCHER_PATH}
+        sudo echo "Categories=Development;IDE;" >> ${PHPSTORM_LAUNCHER_PATH}
+        sudo echo "Terminal=false" >> ${PHPSTORM_LAUNCHER_PATH}
     fi
     breakLine
 }
@@ -370,8 +379,8 @@ configure() {
     export HOME=/home/`ls /home/ | awk '{print $1}'`
     
     # OS setup
-    local isOsSetup=`dpkg -l | grep preload | awk '{print $1}'`
-    if [ "$isOsSetup" = "" ]; then
+    local IS_OS_SETUP=`dpkg -l | grep preload | awk '{print $1}'`
+    if [ "$IS_OS_SETUP" = "" ]; then
         cPrerequisites;
         cRepos;
         cUi;
@@ -379,27 +388,28 @@ configure() {
     
     # Apps setup
     cPhp;
-    cNodejs;
+    cNodeJs;
     cNginx;
     cGit;
     cDocker;
-    cMysql;
-    cMongodb;
-    cVscodeide;
-    cPhpstorm;
+    cMySql;
+    cMongoDb;
+    cVsCodeIde;
+    cPhpStormIde;
     cSlack;
-    cPopcorntime;
+    cPopcornTime;
     cClean;
     exit;
 }
+
 
 ###############################################################
 ## Main application
 ###############################################################
 clear
-if [ ${inodeNum} -eq 2 ];
+if [ ${INODE_NUM} -eq 2 ];
     then
-        install
+        install;
     else
-        configure
+        configure;
 fi
