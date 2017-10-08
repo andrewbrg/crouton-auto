@@ -2,9 +2,10 @@
 
 # Prepare vars
 selfName=`basename $0`
-selfPath=`dirname $0`/$selfName
+selfPath=`dirname $0`/${selfName}
 croutonPath=`dirname $0`/crouton
 phpstormPath=/usr/local/bin/phpstorm
+inodeNum=`ls -id / | awk '{print $1}'`
 robomongoPath=/usr/local/bin/robomongo
 bootstrapPath=`dirname $0`/xenial.tar.bz2
 downloadsPath=/home/chronos/user/Downloads
@@ -34,7 +35,7 @@ breakLine() {
 askUser() {
     while true; do
         read -p " - $1 (y/n): " yn
-        case $yn in
+        case ${yn} in
             [Yy]* ) echo 1; return 1;;
             [Nn]* ) echo 0; return 0;;
         esac
@@ -46,28 +47,28 @@ askUser() {
 ###############################################################
 install() {
     # Move to the downloads folder, we'll work in here
-    cd $downloadsPath
+    cd ${downloadsPath}
 
     # If no crouton file exists get it
-    if [ ! -f $croutonPath ]; then
+    if [ ! -f ${croutonPath} ]; then
         title "Fetching latest crouton"
         wget https://goo.gl/fd3zc -O crouton
         breakLine
     fi
     
     # If no chroot is setup
-    if [ ! -d $chrootPath ]; then
+    if [ ! -d ${chrootPath} ]; then
         # Prepare a bootstrap
-        if [ ! -f $bootstrapPath ]; then
+        if [ ! -f ${bootstrapPath} ]; then
             title "Preparing an Ubuntu bootstrap"
-            sudo sh $croutonPath -d -f $bootstrapPath -r xenial -t $targets
+            sudo sh ${croutonPath} -d -f ${bootstrapPath} -r xenial -t ${targets}
             breakLine
         fi
         
         # Setup Ubuntu
         title "Ubuntu 16.04 on Chromebook"
         if [ "$(askUser "Install Ubuntu 16.04 LTS (xenial)")" -eq 1 ]; then
-            sudo sh $croutonPath -f $bootstrapPath -t $targets
+            sudo sh ${croutonPath} -f ${bootstrapPath} -t ${targets}
         fi
         breakLine
     fi
@@ -76,8 +77,8 @@ install() {
     title "Mounting chroot"
     
     # Get chroot username
-    chrootUsername=`ls $chrootPath/home/ | awk '{print $1}'`
-    sudo enter-chroot -n xenial -l sh /home/$chrootUsername/Downloads/$selfName
+    chrootUsername=`ls ${chrootPath}/home/ | awk '{print $1}'`
+    sudo enter-chroot -n xenial -l sh /home/${chrootUsername}/Downloads/${selfName}
     breakLine
 }
 
@@ -195,16 +196,16 @@ cNginx() {
         sudo apt install -y nginx
         
         local nginxPath=/etc/systemd/system/nginx.service 
-        if [ -f $nginxPath ]; then
-            sudo rm $nginxPath
+        if [ -f ${nginxPath} ]; then
+            sudo rm ${nginxPath}
         fi
         
-        sudo cp /lib/systemd/system/nginx.service $nginxPath
-        sudo sed -i "s/PIDFile=.*/PIDFile=\/run\/nginx.pid/g" $nginxPath
-        sudo sed -i "s/ExecStartPre=.*/ExecStartPre=\/usr\/sbin\/nginx -t -q -g 'daemon on; master_process on;'/g" $nginxPath
-        sudo sed -i "s/ExecStart=.*/ExecStart=\/usr\/sbin\/nginx -g 'daemon on; master_process on;'/g" $nginxPath
-        sudo sed -i "s/ExecReload=.*/ExecReload=\/usr\/bin\/chroot --userspec=http:http \/srv\/http \/usr\/bin\/nginx -g 'pid \/run\/nginx.pid; daemon on; master_process on;' -s reload/g" $nginxPath
-        sudo sed -i "s/ExecStop=.*/ExecStop=\/usr\/bin\/chroot --userspec=http:http \/srv\/http \/usr\/bin\/nginx -g 'pid \/run\/nginx.pid;' -s quit/g" $nginxPath
+        sudo cp /lib/systemd/system/nginx.service ${nginxPath}
+        sudo sed -i "s/PIDFile=.*/PIDFile=\/run\/nginx.pid/g" ${nginxPath}
+        sudo sed -i "s/ExecStartPre=.*/ExecStartPre=\/usr\/sbin\/nginx -t -q -g 'daemon on; master_process on;'/g" ${nginxPath}
+        sudo sed -i "s/ExecStart=.*/ExecStart=\/usr\/sbin\/nginx -g 'daemon on; master_process on;'/g" ${nginxPath}
+        sudo sed -i "s/ExecReload=.*/ExecReload=\/usr\/bin\/chroot --userspec=http:http \/srv\/http \/usr\/bin\/nginx -g 'pid \/run\/nginx.pid; daemon on; master_process on;' -s reload/g" ${nginxPath}
+        sudo sed -i "s/ExecStop=.*/ExecStop=\/usr\/bin\/chroot --userspec=http:http \/srv\/http \/usr\/bin\/nginx -g 'pid \/run\/nginx.pid;' -s quit/g" ${nginxPath}
     fi
     breakLine
 }
@@ -251,32 +252,32 @@ cMongodb() {
             cd /tmp
             wget https://download.robomongo.org/1.1.1/linux/robo3t-1.1.1-linux-x86_64-c93c6b0.tar.gz -O robomongo.tar.gz
             
-            if [ -d $robomongoPath ]; then
-                sudo rm -rf $robomongoPath
+            if [ -d ${robomongoPath} ]; then
+                sudo rm -rf ${robomongoPath}
             fi
             
-            sudo mkdir $robomongoPath
+            sudo mkdir ${robomongoPath}
             sudo tar xf robomongo.tar.gz
             sudo rm robomongo.tar.gz
-            sudo mv robo3t-*/* $robomongoPath
+            sudo mv robo3t-*/* ${robomongoPath}
             sudo rm -rf robo3t-*/
-            sudo rm $robomongoPath/lib/libstdc++*
-            sudo chmod +x $robomongoPath/bin/robo3t
+            sudo rm ${robomongoPath}/lib/libstdc++*
+            sudo chmod +x ${robomongoPath}/bin/robo3t
             
             local robomongoDesktopPath=/usr/share/applications/robomongo.desktop
             
-            if [ ! -f $robomongoDesktopPath ]; then
-                sudo touch $robomongoDesktopPath
+            if [ ! -f ${robomongoDesktopPath} ]; then
+                sudo touch ${robomongoDesktopPath}
             fi
             
-            sudo truncate --size 0 $robomongoDesktopPath
-            sudo echo "[Desktop Entry]" >> $robomongoDesktopPath
-            sudo echo "Name=Robomongo" >> $robomongoDesktopPath
-            sudo echo "Comment=MongoDB Database Administration" >> $robomongoDesktopPath
-            sudo echo "Exec=/usr/local/bin/robomongo/bin/robo3t" >> $robomongoDesktopPath
-            sudo echo "Terminal=false" >> $robomongoDesktopPath
-            sudo echo "Type=Application" >> $robomongoDesktopPath
-            sudo echo "Icon=robomongo" >> $robomongoDesktopPath
+            sudo truncate --size 0 ${robomongoDesktopPath}
+            sudo echo "[Desktop Entry]" >> ${robomongoDesktopPath}
+            sudo echo "Name=Robomongo" >> ${robomongoDesktopPath}
+            sudo echo "Comment=MongoDB Database Administration" >> ${robomongoDesktopPath}
+            sudo echo "Exec=/usr/local/bin/robomongo/bin/robo3t" >> ${robomongoDesktopPath}
+            sudo echo "Terminal=false" >> ${robomongoDesktopPath}
+            sudo echo "Type=Application" >> ${robomongoDesktopPath}
+            sudo echo "Icon=robomongo" >> ${robomongoDesktopPath}
         fi
   fi
   breakLine
@@ -303,19 +304,19 @@ cPopcorntime() {
         
         local popcornTimeDesktopPath=/usr/share/applications/popcorntime.desktop
             
-        if [ ! -f $popcornTimeDesktopPath ]; then
-            sudo touch $popcornTimeDesktopPath
+        if [ ! -f ${popcornTimeDesktopPath} ]; then
+            sudo touch ${popcornTimeDesktopPath}
         fi
         
-        sudo truncate --size 0 $popcornTimeDesktopPath
-        sudo echo "[Desktop Entry]" >> $popcornTimeDesktopPath
-        sudo echo "Version=1.0" >> $popcornTimeDesktopPath
-        sudo echo "Terminal=false" >> $popcornTimeDesktopPath
-        sudo echo "Type=Application" >> $popcornTimeDesktopPath
-        sudo echo "Name=Popcorn Time" >> $popcornTimeDesktopPath
-        sudo echo "Icon=phpstorm" >> $popcornTimeDesktopPath
-        sudo echo "Exec=/usr/bin/popcorn-time" >> $popcornTimeDesktopPath
-        sudo echo "Categories=Application;" >> $popcornTimeDesktopPath
+        sudo truncate --size 0 ${popcornTimeDesktopPath}
+        sudo echo "[Desktop Entry]" >> ${popcornTimeDesktopPath}
+        sudo echo "Version=1.0" >> ${popcornTimeDesktopPath}
+        sudo echo "Terminal=false" >> ${popcornTimeDesktopPath}
+        sudo echo "Type=Application" >> ${popcornTimeDesktopPath}
+        sudo echo "Name=Popcorn Time" >> ${popcornTimeDesktopPath}
+        sudo echo "Icon=phpstorm" >> ${popcornTimeDesktopPath}
+        sudo echo "Exec=/usr/bin/popcorn-time" >> ${popcornTimeDesktopPath}
+        sudo echo "Categories=Application;" >> ${popcornTimeDesktopPath}
     fi
     breakLine   
 }
@@ -327,33 +328,40 @@ cPhpstorm() {
         wget https://download.jetbrains.com/webide/PhpStorm-2017.2.4.tar.gz -O phpstorm.tar.gz
         sudo tar xf phpstorm.tar.gz
         
-        if [ -d $phpstormPath ]; then
-            sudo rm -rf $phpstormPath
+        if [ -d ${phpstormPath} ]; then
+            sudo rm -rf ${phpstormPath}
         fi
         
-        sudo mkdir $phpstormPath
-        sudo mv PhpStorm-*/* $phpstormPath
+        sudo mkdir ${phpstormPath}
+        sudo mv PhpStorm-*/* ${phpstormPath}
         sudo rm -rf PhpStorm-*/
         sudo rm phpstorm.tar.gz
         
         local phpstormDesktopPath=/usr/share/applications/phpstorm.desktop
             
-        if [ ! -f $phpstormDesktopPath ]; then
-            sudo touch $phpstormDesktopPath
+        if [ ! -f ${phpstormDesktopPath} ]; then
+            sudo touch ${phpstormDesktopPath}
         fi
         
-        sudo truncate --size 0 $phpstormDesktopPath
-        sudo echo "[Desktop Entry]" >> $phpstormDesktopPath
-        sudo echo "Version=1.0" >> $phpstormDesktopPath
-        sudo echo "Type=Application" >> $phpstormDesktopPath
-        sudo echo "Name=PhpStorm" >> $phpstormDesktopPath
-        sudo echo "Icon=phpstorm" >> $phpstormDesktopPath
-        sudo echo "Exec=\"/usr/local/bin/phpstorm/bin/phpstorm.sh\" %f" >> $phpstormDesktopPath
-        sudo echo "Comment=The Drive to Develop" >> $phpstormDesktopPath
-        sudo echo "Categories=Development;IDE;" >> $phpstormDesktopPath
-        sudo echo "Terminal=false" >> $phpstormDesktopPath
+        sudo truncate --size 0 ${phpstormDesktopPath}
+        sudo echo "[Desktop Entry]" >> ${phpstormDesktopPath}
+        sudo echo "Version=1.0" >> ${phpstormDesktopPath}
+        sudo echo "Type=Application" >> ${phpstormDesktopPath}
+        sudo echo "Name=PhpStorm" >> ${phpstormDesktopPath}
+        sudo echo "Icon=phpstorm" >> ${phpstormDesktopPath}
+        sudo echo "Exec=\"/usr/local/bin/phpstorm/bin/phpstorm.sh\" %f" >> ${phpstormDesktopPath}
+        sudo echo "Comment=The Drive to Develop" >> ${phpstormDesktopPath}
+        sudo echo "Categories=Development;IDE;" >> ${phpstormDesktopPath}
+        sudo echo "Terminal=false" >> ${phpstormDesktopPath}
     fi
     breakLine
+}
+
+cSlack() {
+    title "Slack"
+    if [ "$(askUser "Install Slack")" -eq 1 ]; then
+        sudo apt install -y slack-desktop gvfs-bin gir1.2-gnomekeyring-1.0
+    fi
 }
 
 configure() {
@@ -379,14 +387,17 @@ configure() {
     cMongodb;
     cVscodeide;
     cPhpstorm;
+    cSlack;
     cPopcorntime;
     cClean;
     exit;
 }
 
+###############################################################
+## Main application
+###############################################################
 clear
-inodeNum=`ls -id / | awk '{print $1}'`
-if [ $inodeNum -eq 2 ];
+if [ ${inodeNum} -eq 2 ];
     then
         install
     else
