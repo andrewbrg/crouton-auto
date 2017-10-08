@@ -138,12 +138,18 @@ cClean() {
 cPhp() {
     title "PHP 7.0"
     if [ "$(askUser "Install PHP7.0")" -eq 1 ]; then
-        sudo apt install -y php7.0 php7.0-fpm php7.0-cli php7.0-common php7.0-mbstring php7.0-gd php7.0-intl php7.0-xml php7.0-mysql php7.0-mcrypt php7.0-zip
+        sudo apt install -y php7.0 php7.0-fpm php7.0-cli php7.0-common php7.0-mbstring php7.0-gd php7.0-intl php7.0-xml php7.0-mysql php7.0-mcrypt php7.0-zip php7.0-dev php-pear
         
         breakLine
         title "Composer"
         if [ "$(askUser "Install Composer")" -eq 1 ]; then
             sudo curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
+        fi
+        
+        breakLine
+        title "Swoole"
+        if [ "$(askUser "Install Swoole")" -eq 1 ]; then
+            sudo pecl install -y swoole
         fi
     fi
     breakLine
