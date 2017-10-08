@@ -199,26 +199,6 @@ cNodeJs() {
     breakLine
 }
 
-cNginx() {
-    title "Nginx"
-    if [ "$(askUser "Install Nginx")" -eq 1 ]; then
-        sudo apt install -y nginx
-        
-        local NGINX_SERVICE_PATH=/etc/systemd/system/nginx.service
-        if [ -f ${NGINX_SERVICE_PATH} ]; then
-            sudo rm ${NGINX_SERVICE_PATH}
-        fi
-        
-        sudo cp /lib/systemd/system/nginx.service ${NGINX_SERVICE_PATH}
-        sudo sed -i "s/PIDFile=.*/PIDFile=\/run\/nginx.pid/g" ${NGINX_SERVICE_PATH}
-        sudo sed -i "s/ExecStartPre=.*/ExecStartPre=\/usr\/sbin\/nginx -t -q -g 'daemon on; master_process on;'/g" ${NGINX_SERVICE_PATH}
-        sudo sed -i "s/ExecStart=.*/ExecStart=\/usr\/sbin\/nginx -g 'daemon on; master_process on;'/g" ${NGINX_SERVICE_PATH}
-        sudo sed -i "s/ExecReload=.*/ExecReload=\/usr\/bin\/chroot --userspec=http:http \/srv\/http \/usr\/bin\/nginx -g 'pid \/run\/nginx.pid; daemon on; master_process on;' -s reload/g" ${NGINX_SERVICE_PATH}
-        sudo sed -i "s/ExecStop=.*/ExecStop=\/usr\/bin\/chroot --userspec=http:http \/srv\/http \/usr\/bin\/nginx -g 'pid \/run\/nginx.pid;' -s quit/g" ${NGINX_SERVICE_PATH}
-    fi
-    breakLine
-}
-
 cGit() {
     title "Git"
     if [ "$(askUser "Install Git")" -eq 1 ]; then
@@ -236,15 +216,9 @@ cDocker() {
 }
 
 cMySql() {
-    title "MySQL Server"
-    if [ "$(askUser "Install MySQL Server")" -eq 1 ]; then
-        sudo apt install -y mysql-server
-   
-        breakLine
-        title "MySQL Workbench"
-        if [ "$(askUser "Install MySQL Workbench")" -eq 1 ]; then
-            sudo apt install -y mysql-workbench
-        fi
+    title "MySQL Workbench"
+    if [ "$(askUser "Install MySQL Workbench")" -eq 1 ]; then
+        sudo apt install -y mysql-workbench
     fi
     breakLine
 }
@@ -408,7 +382,6 @@ configure() {
     # Apps setup
     cPhp;
     cNodeJs;
-    cNginx;
     cGit;
     cDocker;
     cMySql;
