@@ -279,8 +279,8 @@ cVscodeide() {
 }
 
 cPopcorntime() {
-    title "Microsoft VS Code IDE"
-    if [ "$(askUser "Install Microsoft VS Code IDE")" -eq 1 ]; then
+    title "Popcorn Time"
+    if [ "$(askUser "Install Popcorn Time")" -eq 1 ]; then
         if [ ! -d /opt/popcorn-time ]; then
             sudo rm -rf /opt/popcorn-time
         fi
