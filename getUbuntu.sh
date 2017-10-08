@@ -54,8 +54,8 @@ install() {
 
     # If no crouton file exists get it
     if [ ! -f ${CROUTON_PATH} ]; then
-        title "Fetching latest crouton"
-        wget https://goo.gl/fd3zc -O crouton
+        title "Fetching crouton"
+        wget "https://goo.gl/fd3zc" -O crouton
         breakLine
     fi
     
@@ -215,7 +215,7 @@ cDocker() {
     breakLine
 }
 
-cMySql() {
+cMySqlWorkbench() {
     title "MySQL Workbench"
     if [ "$(askUser "Install MySQL Workbench")" -eq 1 ]; then
         sudo apt install -y mysql-workbench
@@ -233,7 +233,7 @@ cMongoDb() {
         if [ "$(askUser "Install RoboMongo")" -eq 1 ]; then
             sudo apt install -y xcb
             cd /tmp
-            wget https://download.robomongo.org/1.1.1/linux/robo3t-1.1.1-linux-x86_64-c93c6b0.tar.gz -O robomongo.tar.gz
+            wget "https://download.robomongo.org/1.1.1/linux/robo3t-1.1.1-linux-x86_64-c93c6b0.tar.gz" -O robomongo.tar.gz
             
             if [ -d ${ROBO_MONGO_PATH} ]; then
                 sudo rm -rf ${ROBO_MONGO_PATH}
@@ -282,7 +282,7 @@ cPopcornTime() {
         fi
         
         sudo mkdir /opt/popcorn-time
-        sudo wget -qO- https://get.popcorntime.sh/build/Popcorn-Time-0.3.10-Linux-64.tar.xz | sudo tar Jx -C /opt/popcorn-time
+        sudo wget -qO- "https://get.popcorntime.sh/build/Popcorn-Time-0.3.10-Linux-64.tar.xz" | sudo tar Jx -C /opt/popcorn-time
         sudo ln -sf /opt/popcorn-time/Popcorn-Time /usr/bin/popcorn-time
         
         local POPCORN_TIME_LAUNCHER_PATH=/usr/share/applications/popcorntime.desktop
@@ -298,7 +298,7 @@ cPopcornTime() {
         sudo echo "Type=Application" >> ${POPCORN_TIME_LAUNCHER_PATH}
         sudo echo "Name=Popcorn Time" >> ${POPCORN_TIME_LAUNCHER_PATH}
         sudo echo "Icon=phpstorm" >> ${POPCORN_TIME_LAUNCHER_PATH}
-        sudo echo "Exec=/usr/bin/popcorn-time" >> ${POPCORN_TIME_LAUNCHER_PATH}
+        sudo echo "Exec=/opt/popcorn-time/Popcorn-Time" >> ${POPCORN_TIME_LAUNCHER_PATH}
         sudo echo "Categories=Application;" >> ${POPCORN_TIME_LAUNCHER_PATH}
     fi
     breakLine   
@@ -308,7 +308,7 @@ cPhpStormIde() {
     title "PHP Storm IDE"
     if [ "$(askUser "Install PHP Storm IDE")" -eq 1 ]; then
         cd /tmp
-        wget https://download.jetbrains.com/webide/PhpStorm-2017.2.4.tar.gz -O phpstorm.tar.gz
+        wget "https://download.jetbrains.com/webide/PhpStorm-2017.2.4.tar.gz" -O phpstorm.tar.gz
         sudo tar xf phpstorm.tar.gz
         
         if [ -d ${PHPSTORM_PATH} ]; then
@@ -366,6 +366,17 @@ cSlack() {
     breakLine
 }
 
+cFacebookMessenger() {
+    title "Facebook Messenger"
+    if [ "$(askUser "Install Facebook Messenger")" -eq 1 ]; then
+        cd /tmp
+        wget "https://updates.messengerfordesktop.com/download/linux/latest/beta?arch=amd64&pkg=deb" -O messenger.deb
+        sudo dpkg -i messenger.deb
+        sudo rm messenger.deb
+    fi
+    breakLine
+}
+
 configure() {
     
     # Set the home variable
@@ -384,11 +395,12 @@ configure() {
     cNodeJs;
     cGit;
     cDocker;
-    cMySql;
+    cMySqlWorkbench;
     cMongoDb;
     cVsCodeIde;
     cPhpStormIde;
     cSlack;
+    cFacebookMessenger;
     cPopcornTime;
     cClean;
     exit;
