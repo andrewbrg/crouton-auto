@@ -193,6 +193,18 @@ cNginx() {
     title "Nginx"
     if [ "$(askUser "Install Nginx")" -eq 1 ]; then
         sudo apt install -y nginx
+        
+        local nginxPath=/etc/systemd/system/nginx.service 
+        if [ -f $nginxPath ]; then
+            sudo rm $nginxPath
+        fi
+        
+        sudo cp /lib/systemd/system/nginx.service $nginxPath
+        sudo sed -i "s/PIDFile=.*/PIDFile=\/run\/nginx.pid/g" $nginxPath
+        sudo sed -i "s/ExecStartPre=.*/ExecStartPre=\/usr\/sbin\/nginx -t -q -g 'daemon on; master_process on;'/g" $nginxPath
+        sudo sed -i "s/ExecStart=.*/ExecStart=\/usr\/sbin\/nginx -g 'daemon on; master_process on;'/g" $nginxPath
+        sudo sed -i "s/ExecReload=.*/ExecReload=\/usr\/bin\/chroot --userspec=http:http \/srv\/http \/usr\/bin\/nginx -g 'pid \/run\/nginx.pid; daemon on; master_process on;' -s reload/g" $nginxPath
+        sudo sed -i "s/ExecStop=.*/ExecStop=\/usr\/bin\/chroot --userspec=http:http \/srv\/http \/usr\/bin\/nginx -g 'pid \/run\/nginx.pid;' -s quit/g" $nginxPath
     fi
     breakLine
 }
