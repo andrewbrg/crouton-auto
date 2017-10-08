@@ -358,7 +358,7 @@ cPhpStormIde() {
         sudo echo "Type=Application" >> ${PHPSTORM_LAUNCHER_PATH}
         sudo echo "Name=PhpStorm" >> ${PHPSTORM_LAUNCHER_PATH}
         sudo echo "Icon=phpstorm" >> ${PHPSTORM_LAUNCHER_PATH}
-        sudo echo "Exec=\"/usr/local/bin/phpstorm/bin/phpstorm.sh\" %f" >> ${PHPSTORM_LAUNCHER_PATH}
+        sudo echo "Exec=/usr/local/bin/phpstorm/bin/phpstorm.sh" >> ${PHPSTORM_LAUNCHER_PATH}
         sudo echo "Comment=The Drive to Develop" >> ${PHPSTORM_LAUNCHER_PATH}
         sudo echo "Categories=Development;IDE;" >> ${PHPSTORM_LAUNCHER_PATH}
         sudo echo "Terminal=false" >> ${PHPSTORM_LAUNCHER_PATH}
@@ -370,7 +370,26 @@ cSlack() {
     title "Slack"
     if [ "$(askUser "Install Slack")" -eq 1 ]; then
         sudo apt install -y slack-desktop gvfs-bin gir1.2-gnomekeyring-1.0
+
+        local SLACK_LAUNCHER_PATH=/usr/share/applications/slack.desktop
+
+        if [ ! -f ${SLACK_LAUNCHER_PATH} ]; then
+            sudo touch ${SLACK_LAUNCHER_PATH}
+        fi
+
+        sudo truncate --size 0 ${SLACK_LAUNCHER_PATH}
+        sudo echo "[Desktop Entry]" >> ${SLACK_LAUNCHER_PATH}
+        sudo echo "Name=Slack" >> ${SLACK_LAUNCHER_PATH}
+        sudo echo "Comment=Slack Desktop" >> ${SLACK_LAUNCHER_PATH}
+        sudo echo "GenericName=Slack Client for Linux" >> ${SLACK_LAUNCHER_PATH}
+        sudo echo "Exec=/usr/bin/slack --disable-gpu %U" >> ${SLACK_LAUNCHER_PATH}
+        sudo echo "Icon=slack" >> ${SLACK_LAUNCHER_PATH}
+        sudo echo "Type=Application" >> ${SLACK_LAUNCHER_PATH}
+        sudo echo "StartupNotify=true" >> ${SLACK_LAUNCHER_PATH}
+        sudo echo "Categories=GNOME;GTK;Network;InstantMessaging;" >> ${SLACK_LAUNCHER_PATH}
+        sudo echo "MimeType=x-scheme-handler/slack;" >> ${SLACK_LAUNCHER_PATH}
     fi
+    breakLine
 }
 
 configure() {
