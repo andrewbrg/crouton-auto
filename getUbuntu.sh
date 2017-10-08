@@ -117,7 +117,7 @@ cUi() {
     title "Preparing the Gnome UI"
     sudo apt dist-upgrade -y
     sudo apt install -y numix-icon-theme-circle gnome-tweak-tool gnome-terminal whoopsie gnome-control-center gnome-online-accounts
-    sudo apt install -y language-pack-en-base nano mlocate htop notepadqq preload inxi
+    sudo apt install -y language-pack-en-base nano mlocate htop notepadqq preload inxi filezilla
     sudo apt install -y gnome-shell-extension-dashtodock gnome-software gnome-software-common gnome-shell-pomodoro
     breakLine
 }
@@ -172,6 +172,13 @@ cNodejs() {
         if [ "$(askUser "Install Meteor.js")" -eq 1 ]; then
             sudo curl https://install.meteor.com/ | sh
         fi
+        
+        breakLine
+        title "Vue Cli"
+        if [ "$(askUser "Install Vue")" -eq 1 ]; then
+            sudo npm install -y vue-cli -g
+        fi
+        
     fi
     breakLine
 }
