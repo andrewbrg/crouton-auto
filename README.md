@@ -6,6 +6,10 @@
    
 This is a handy tutorial on setting up a dev machine on your chromebook, Crouton is developed and maintained by David Schneider https://github.com/dnschneid  
 
+This script is built for amd64 processors, if you have an ARM cpu some packages will not function.
+
+Your Chromebook must be in developer mode in order to use this script.
+
 **A few vital resources before getting started.** 
 
 | Type | Link |
@@ -17,9 +21,18 @@ This is a handy tutorial on setting up a dev machine on your chromebook, Crouton
   
 ***
   
-**Ready, Let's go!** After placing your Chromebook into developer mode, launch a terminal by `CTRL+ALT+T` then run the following commands:
+**Ready? let's go!** After placing your Chromebook into developer mode, launch a crosh terminal by hitting `CTRL+ALT+T` then type in the following commands:
 
 ```shell
 shell  
 sudo sh ~/Downloads/getUbuntu.sh
 ```
+
+After the installation is complete you can launch Ubuntu by oepning a crosh terminal and executing:
+
+```shell
+shell  
+sudo startgnome
+```
+
+To switch between operating systems hit `CTRL+ALT+FORWARD` or `CTRL+ALT+BACKWARDS`
