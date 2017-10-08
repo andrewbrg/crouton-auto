@@ -118,11 +118,16 @@ cRepos() {
 }
 
 cUi() {
-    title "Preparing the Gnome UI"
+    title "Preparing the Gnome UI & Apps"
     sudo apt dist-upgrade -y
     sudo apt install -y numix-icon-theme-circle gnome-tweak-tool gnome-terminal whoopsie gnome-control-center gnome-online-accounts
     sudo apt install -y language-pack-en-base nano mlocate htop notepadqq preload inxi filezilla vlc bleachbit
     sudo apt install -y gnome-shell-extension-dashtodock gnome-software gnome-software-common gnome-shell-pomodoro chrome-gnome-shell gnome-shell-extension-top-icons-plus
+
+    cd /tmp
+    wget "http://launchpadlibrarian.net/228111194/gnome-disk-utility_3.18.3.1-1ubuntu1_amd64.deb" -O gnome-disk.deb
+    sudo dpkg -i gnome-disk.deb
+    sudo rm gnome-disk.deb
     breakLine
 }
 
