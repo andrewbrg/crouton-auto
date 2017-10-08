@@ -122,7 +122,7 @@ cUi() {
     sudo apt dist-upgrade -y
     sudo apt install -y numix-icon-theme-circle gnome-tweak-tool gnome-terminal whoopsie gnome-control-center gnome-online-accounts
     sudo apt install -y language-pack-en-base nano mlocate htop notepadqq preload inxi filezilla vlc
-    sudo apt install -y gnome-shell-extension-dashtodock gnome-software gnome-software-common gnome-shell-pomodoro
+    sudo apt install -y gnome-shell-extension-dashtodock gnome-software gnome-software-common gnome-shell-pomodoro chrome-gnome-shell gnome-shell-extension-top-icons-plus
     breakLine
 }
 
