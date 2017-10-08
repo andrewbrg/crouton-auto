@@ -117,7 +117,7 @@ cUi() {
     title "Preparing the Gnome UI"
     sudo apt dist-upgrade -y
     sudo apt install -y numix-icon-theme-circle gnome-tweak-tool gnome-terminal whoopsie gnome-control-center gnome-online-accounts
-    sudo apt install -y language-pack-en-base nano mlocate htop notepadqq preload inxi filezilla
+    sudo apt install -y language-pack-en-base nano mlocate htop notepadqq preload inxi filezilla vlc
     sudo apt install -y gnome-shell-extension-dashtodock gnome-software gnome-software-common gnome-shell-pomodoro
     breakLine
 }
@@ -278,6 +278,36 @@ cVscodeide() {
     breakLine
 }
 
+cPopcorntime() {
+    title "Microsoft VS Code IDE"
+    if [ "$(askUser "Install Microsoft VS Code IDE")" -eq 1 ]; then
+        if [ ! -d /opt/popcorn-time ]; then
+            sudo rm -rf /opt/popcorn-time
+        fi
+        
+        sudo mkdir /opt/popcorn-time
+        sudo wget -qO- https://get.popcorntime.sh/build/Popcorn-Time-0.3.10-Linux-64.tar.xz | sudo tar Jx -C /opt/popcorn-time
+        sudo ln -sf /opt/popcorn-time/Popcorn-Time /usr/bin/popcorn-time
+        
+        local popcornTimeDesktopPath=/usr/share/applications/popcorntime.desktop
+            
+        if [ ! -f $popcornTimeDesktopPath ]; then
+            sudo touch $popcornTimeDesktopPath
+        fi
+        
+        sudo truncate --size 0 $popcornTimeDesktopPath
+        sudo echo "[Desktop Entry]" >> $popcornTimeDesktopPath
+        sudo echo "Version=1.0" >> $popcornTimeDesktopPath
+        sudo echo "Terminal=false" >> $popcornTimeDesktopPath
+        sudo echo "Type=Application" >> $popcornTimeDesktopPath
+        sudo echo "Name=Popcorn Time" >> $popcornTimeDesktopPath
+        sudo echo "Icon=phpstorm" >> $popcornTimeDesktopPath
+        sudo echo "Exec=/usr/bin/popcorn-time" >> $popcornTimeDesktopPath
+        sudo echo "Categories=Application;" >> $popcornTimeDesktopPath
+    fi
+    breakLine   
+}
+
 cPhpstorm() {
     title "PHP Storm IDE"
     if [ "$(askUser "Install PHP Storm IDE")" -eq 1 ]; then
@@ -300,6 +330,7 @@ cPhpstorm() {
             sudo touch $phpstormDesktopPath
         fi
         
+        sudo truncate --size 0 $phpstormDesktopPath
         sudo echo "[Desktop Entry]" >> $phpstormDesktopPath
         sudo echo "Version=1.0" >> $phpstormDesktopPath
         sudo echo "Type=Application" >> $phpstormDesktopPath
@@ -336,7 +367,7 @@ configure() {
     cMongodb;
     cVscodeide;
     cPhpstorm;
-    
+    cPopcorntime;
     cClean;
     exit;
 }
