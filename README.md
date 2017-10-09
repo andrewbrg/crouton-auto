@@ -28,11 +28,11 @@ shell
 sudo sh ~/Downloads/getUbuntu.sh
 ```
 
-After the installation is complete you can launch Ubuntu by oepning a crosh terminal and executing:
+After the installation is complete you can launch Ubuntu by opening a crosh terminal `CTRL+ALT+T` and executing:
 
 ```shell
 shell  
 sudo startgnome -b
 ```
-
+Once in Ubuntu i'd recommend loading up the Tweak tool (which has been pre-installed) and selecting the `global dark theme` and the `numix-circle` icons.    
 To switch between operating systems hit `CTRL+ALT+FORWARD` or `CTRL+ALT+BACKWARDS`

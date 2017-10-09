@@ -258,6 +258,7 @@ cMongoDb() {
             sudo echo "Terminal=false" >> ${ROBO_MONGO_LAUNCHER_PATH}
             sudo echo "Type=Application" >> ${ROBO_MONGO_LAUNCHER_PATH}
             sudo echo "Icon=robomongo" >> ${ROBO_MONGO_LAUNCHER_PATH}
+            sudo echo "StartupWMClass=robo3t" >> ${ROBO_MONGO_LAUNCHER_PATH}
         fi
   fi
   breakLine
@@ -300,6 +301,7 @@ cPhpStormIde() {
         sudo echo "Name=PhpStorm" >> ${PHPSTORM_LAUNCHER_PATH}
         sudo echo "Icon=phpstorm" >> ${PHPSTORM_LAUNCHER_PATH}
         sudo echo "Exec=/usr/local/bin/phpstorm/bin/phpstorm.sh" >> ${PHPSTORM_LAUNCHER_PATH}
+        sudo echo "StartupWMClass=jetbrains-phpstorm" >> ${PHPSTORM_LAUNCHER_PATH}
         sudo echo "Comment=The Drive to Develop" >> ${PHPSTORM_LAUNCHER_PATH}
         sudo echo "Categories=Development;IDE;" >> ${PHPSTORM_LAUNCHER_PATH}
         sudo echo "Terminal=false" >> ${PHPSTORM_LAUNCHER_PATH}
@@ -369,6 +371,7 @@ cPopcornTime() {
         sudo echo "Name=Popcorn Time" >> ${POPCORN_TIME_LAUNCHER_PATH}
         sudo echo "Icon=phpstorm" >> ${POPCORN_TIME_LAUNCHER_PATH}
         sudo echo "Exec=/opt/popcorn-time/Popcorn-Time" >> ${POPCORN_TIME_LAUNCHER_PATH}
+        sudo echo "StartupWMClass=Chromium-browser" >> ${POPCORN_TIME_LAUNCHER_PATH}
         sudo echo "Categories=Application;" >> ${POPCORN_TIME_LAUNCHER_PATH}
     fi
     breakLine
