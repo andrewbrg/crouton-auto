@@ -123,7 +123,7 @@ cRepositories() {
 cUi() {
     title "Preparing the Gnome UI & Apps"
     sudo apt dist-upgrade -y
-    sudo apt install -y numix-icon-theme-circle whoopsie adapta-gtk-theme language-pack-en-base nano mlocate htop notepadqq preload inxi filezilla vlc bleachbit putty midori vim kiki terminator
+    sudo apt install -y numix-icon-theme-circle whoopsie adapta-gtk-theme language-pack-en-base nano mlocate htop notepadqq preload inxi filezilla vlc bleachbit putty midori vim fish kiki terminator
     sudo apt install -y gnome-tweak-tool gnome-terminal gnome-control-center gnome-online-accounts gnome-shell-extension-dashtodock gnome-software gnome-software-common gnome-shell-pomodoro chrome-gnome-shell gnome-shell-extension-top-icons-plus
 
     cd /tmp
@@ -286,8 +286,8 @@ cVsCodeIde() {
 }
 
 cPhpStormIde() {
-    title "PHP Storm IDE"
-    if [ "$(askUser "Install PHP Storm IDE")" -eq 1 ]; then
+    title "PHP Storm (30 Day Trial) IDE"
+    if [ "$(askUser "Install PHP Storm (30 Day Trial) IDE")" -eq 1 ]; then
         cd /tmp
         wget "https://download.jetbrains.com/webide/PhpStorm-2017.2.4.tar.gz" -O phpstorm.tar.gz
         sudo tar xf phpstorm.tar.gz
@@ -323,8 +323,8 @@ cPhpStormIde() {
 }
 
 cPyCharmIde() {
-    title "PyCharm IDE"
-    if [ "$(askUser "Install PyCharm IDE")" -eq 1 ]; then
+    title "PyCharm Community Edition IDE"
+    if [ "$(askUser "Install PyCharm Community Edition IDE")" -eq 1 ]; then
         cd /tmp
         wget "https://download.jetbrains.com/python/pycharm-community-2017.2.3.tar.gz" -O pycharm.tar.gz
         sudo tar xf pycharm.tar.gz
@@ -350,11 +350,23 @@ cPyCharmIde() {
         sudo echo "Type=Application" >> ${PYCHARM_LAUNCHER_PATH}
         sudo echo "Name=PyCharm" >> ${PYCHARM_LAUNCHER_PATH}
         sudo echo "Icon=pycharm" >> ${PYCHARM_LAUNCHER_PATH}
-        sudo echo "Exec=/usr/local/bin/pycharm/bin/pycharm" >> ${PYCHARM_LAUNCHER_PATH}
-        sudo echo "StartupWMClass=jetbrains-pycharm" >> ${PYCHARM_LAUNCHER_PATH}
+        sudo echo "Exec=/usr/local/bin/pycharm/bin/pycharm.sh" >> ${PYCHARM_LAUNCHER_PATH}
+        sudo echo "StartupWMClass=jetbrains-pycharm-ce" >> ${PYCHARM_LAUNCHER_PATH}
         sudo echo "Comment=The Drive to Develop" >> ${PYCHARM_LAUNCHER_PATH}
         sudo echo "Categories=Development;IDE;" >> ${PYCHARM_LAUNCHER_PATH}
         sudo echo "Terminal=false" >> ${PYCHARM_LAUNCHER_PATH}
+    fi
+    breakLine
+}
+
+cBracketsIde() {
+    title "Brackets IDE"
+    if [ "$(askUser "Install Brackets IDE")" -eq 1 ]; then
+        cd /tmp
+        sudo apt install -y libpangox-1.0-0 libpango1.0-0
+        wget "https://github.com/adobe/brackets/releases/download/release-1.11/Brackets.Release.1.11.64-bit.deb" -O brackets.deb
+        sudo dpkg -i brackets.deb
+        sudo rm brackets.deb
     fi
     breakLine
 }
@@ -469,6 +481,7 @@ configure() {
     cVsCodeIde
     cPhpStormIde
     cPyCharmIde
+    cBracketsIde
     cSlack
     cFacebookMessenger
     cPopcornTime
