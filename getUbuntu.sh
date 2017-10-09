@@ -77,7 +77,7 @@ install() {
     fi
     
     # Launch Ubuntu & configure
-    title "Mounting chroot"
+    title "Mounting chroot containing Ubuntu 16.04"
     
     # Get chroot username
     CHROOT_USERNAME=`ls ${CHROOT_PATH}/home/ | awk '{print $1}'`
@@ -88,14 +88,14 @@ install() {
 ###############################################################
 ## Configuration
 ###############################################################
-cPrerequisites() {
-    title "Installing prerequisites"
+cPreRequisites() {
+    title "Installing pre-requisites"
     sudo apt install -y locales software-properties-common python-software-properties
     breakLine
 }
 
-cRepos() {
-    title "Setting up repos"
+cRepositories() {
+    title "Setting up ubuntu repositories"
     sudo add-apt-repository -y ppa:numix/ppa
     sudo add-apt-repository -y ppa:gnome3-team/gnome3-staging
     sudo add-apt-repository -y ppa:gnome3-team/gnome3
@@ -121,26 +121,18 @@ cUi() {
     title "Preparing the Gnome UI & Apps"
     sudo apt dist-upgrade -y
     sudo apt install -y numix-icon-theme-circle gnome-tweak-tool gnome-terminal whoopsie gnome-control-center gnome-online-accounts
-    sudo apt install -y language-pack-en-base nano mlocate htop notepadqq preload inxi filezilla vlc bleachbit
+    sudo apt install -y language-pack-en-base nano mlocate htop notepadqq preload inxi filezilla vlc bleachbit putty
     sudo apt install -y gnome-shell-extension-dashtodock gnome-software gnome-software-common gnome-shell-pomodoro chrome-gnome-shell gnome-shell-extension-top-icons-plus
 
     cd /tmp
     wget "http://launchpadlibrarian.net/228111194/gnome-disk-utility_3.18.3.1-1ubuntu1_amd64.deb" -O gnome-disk.deb
     sudo dpkg -i gnome-disk.deb
     sudo rm gnome-disk.deb
-    breakLine
-}
 
-cClean() {
-    title "Cleaning up"
-    sudo echo "LANG=en_US.UTF-8" >> /etc/default/locale
-    sudo echo "LANGUAGE=en_US.UTF-8" >> /etc/default/locale
-    sudo echo "LC_ALL=en_US.UTF-8" >> /etc/default/locale
-    sudo sed -i "s/XKBMODEL=.*/XKBMODEL=\"chromebook\"/g" /etc/default/keyboard
-    
-    sudo apt remove -y xterm netsurf netsurf-common netsurf-fb netsurf-gtk
-    sudo apt --purge autoremove -y
-    sudo updatedb
+    cd /tmp
+    wget "https://builds.insomnia.rest/downloads/ubuntu/latest" -O insomnia.deb
+    sudo dpkg -i insomnia.deb
+    sudo rm insomnia.deb
     breakLine
 }
 
@@ -272,41 +264,11 @@ cMongoDb() {
 }
 
 cVsCodeIde() {
-    title "Microsoft VS Code IDE"
-    if [ "$(askUser "Install Microsoft VS Code IDE")" -eq 1 ]; then
+    title "Microsoft Visual Studio Code IDE"
+    if [ "$(askUser "Install Microsoft Visual Studio Code IDE")" -eq 1 ]; then
         sudo apt install -y code
     fi
     breakLine
-}
-
-cPopcornTime() {
-    title "Popcorn Time"
-    if [ "$(askUser "Install Popcorn Time")" -eq 1 ]; then
-        if [ ! -d /opt/popcorn-time ]; then
-            sudo rm -rf /opt/popcorn-time
-        fi
-        
-        sudo mkdir /opt/popcorn-time
-        sudo wget -qO- "https://get.popcorntime.sh/build/Popcorn-Time-0.3.10-Linux-64.tar.xz" | sudo tar Jx -C /opt/popcorn-time
-        sudo ln -sf /opt/popcorn-time/Popcorn-Time /usr/bin/popcorn-time
-        
-        local POPCORN_TIME_LAUNCHER_PATH=/usr/share/applications/popcorntime.desktop
-            
-        if [ ! -f ${POPCORN_TIME_LAUNCHER_PATH} ]; then
-            sudo touch ${POPCORN_TIME_LAUNCHER_PATH}
-        fi
-        
-        sudo truncate --size 0 ${POPCORN_TIME_LAUNCHER_PATH}
-        sudo echo "[Desktop Entry]" >> ${POPCORN_TIME_LAUNCHER_PATH}
-        sudo echo "Version=1.0" >> ${POPCORN_TIME_LAUNCHER_PATH}
-        sudo echo "Terminal=false" >> ${POPCORN_TIME_LAUNCHER_PATH}
-        sudo echo "Type=Application" >> ${POPCORN_TIME_LAUNCHER_PATH}
-        sudo echo "Name=Popcorn Time" >> ${POPCORN_TIME_LAUNCHER_PATH}
-        sudo echo "Icon=phpstorm" >> ${POPCORN_TIME_LAUNCHER_PATH}
-        sudo echo "Exec=/opt/popcorn-time/Popcorn-Time" >> ${POPCORN_TIME_LAUNCHER_PATH}
-        sudo echo "Categories=Application;" >> ${POPCORN_TIME_LAUNCHER_PATH}
-    fi
-    breakLine   
 }
 
 cPhpStormIde() {
@@ -382,6 +344,54 @@ cFacebookMessenger() {
     breakLine
 }
 
+cPopcornTime() {
+    title "Popcorn Time (because why not? :p)"
+    if [ "$(askUser "Install Popcorn Time")" -eq 1 ]; then
+        if [ ! -d /opt/popcorn-time ]; then
+            sudo rm -rf /opt/popcorn-time
+        fi
+
+        sudo mkdir /opt/popcorn-time
+        sudo wget -qO- "https://get.popcorntime.sh/build/Popcorn-Time-0.3.10-Linux-64.tar.xz" | sudo tar Jx -C /opt/popcorn-time
+        sudo ln -sf /opt/popcorn-time/Popcorn-Time /usr/bin/popcorn-time
+
+        local POPCORN_TIME_LAUNCHER_PATH=/usr/share/applications/popcorntime.desktop
+
+        if [ ! -f ${POPCORN_TIME_LAUNCHER_PATH} ]; then
+            sudo touch ${POPCORN_TIME_LAUNCHER_PATH}
+        fi
+
+        sudo truncate --size 0 ${POPCORN_TIME_LAUNCHER_PATH}
+        sudo echo "[Desktop Entry]" >> ${POPCORN_TIME_LAUNCHER_PATH}
+        sudo echo "Version=1.0" >> ${POPCORN_TIME_LAUNCHER_PATH}
+        sudo echo "Terminal=false" >> ${POPCORN_TIME_LAUNCHER_PATH}
+        sudo echo "Type=Application" >> ${POPCORN_TIME_LAUNCHER_PATH}
+        sudo echo "Name=Popcorn Time" >> ${POPCORN_TIME_LAUNCHER_PATH}
+        sudo echo "Icon=phpstorm" >> ${POPCORN_TIME_LAUNCHER_PATH}
+        sudo echo "Exec=/opt/popcorn-time/Popcorn-Time" >> ${POPCORN_TIME_LAUNCHER_PATH}
+        sudo echo "Categories=Application;" >> ${POPCORN_TIME_LAUNCHER_PATH}
+    fi
+    breakLine
+}
+
+cLocalesAndChromebook() {
+    title "Configuring locales and Chromebook keyboard"
+    sudo echo "LANG=en_US.UTF-8" >> /etc/default/locale
+    sudo echo "LANGUAGE=en_US.UTF-8" >> /etc/default/locale
+    sudo echo "LC_ALL=en_US.UTF-8" >> /etc/default/locale
+    sudo sed -i "s/XKBMODEL=.*/XKBMODEL=\"chromebook\"/g" /etc/default/keyboard
+    breakLine
+}
+
+cClean() {
+    title "Cleaning up"
+    sudo apt remove -y xterm netsurf netsurf-common netsurf-fb netsurf-gtk
+    sudo apt update -y
+    sudo apt --purge autoremove -y
+    sudo updatedb
+    breakLine
+}
+
 configure() {
     
     # Set the home variable
@@ -390,25 +400,26 @@ configure() {
     # OS setup
     local IS_OS_SETUP=`dpkg -l | grep preload | awk '{print $1}'`
     if [ "$IS_OS_SETUP" = "" ]; then
-        cPrerequisites;
-        cRepos;
-        cUi;
+        cPreRequisites
+        cRepositories
+        cUi
     fi
     
     # Apps setup
-    cPhp;
-    cNodeJs;
-    cGit;
-    cDocker;
-    cMySqlWorkbench;
-    cMongoDb;
-    cVsCodeIde;
-    cPhpStormIde;
-    cSlack;
-    cFacebookMessenger;
-    cPopcornTime;
-    cClean;
-    exit;
+    cPhp
+    cNodeJs
+    cGit
+    cDocker
+    cMySqlWorkbench
+    cMongoDb
+    cVsCodeIde
+    cPhpStormIde
+    cSlack
+    cFacebookMessenger
+    cPopcornTime
+    cLocalesAndChromebook
+    cClean
+    exit
 }
 
 
@@ -418,7 +429,7 @@ configure() {
 clear
 if [ ${INODE_NUM} -eq 2 ];
     then
-        install;
+        install
     else
-        configure;
+        configure
 fi

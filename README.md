@@ -4,9 +4,9 @@
    
 ![3fa4bf29a8d83625909b76abb99537e9.jpg](http://pichoster.net/images/2017/10/03/3fa4bf29a8d83625909b76abb99537e9.jpg)
    
-This is a handy tutorial on setting up a dev machine on your chromebook, Crouton is developed and maintained by David Schneider https://github.com/dnschneid  
+This is a handy script to automatically set up an Ubuntu dev machine on your chromebook. Crouton is developed and maintained by David Schneider https://github.com/dnschneid  
 
-This script is built for amd64 processors, if you have an ARM cpu some packages will not function.
+**This script is built for AMD64 processors**, if you have an ARM cpu some packages will not function.
 
 Your Chromebook must be in developer mode in order to use this script.
 
@@ -32,7 +32,7 @@ After the installation is complete you can launch Ubuntu by oepning a crosh term
 
 ```shell
 shell  
-sudo startgnome
+sudo startgnome -b
 ```
 
 To switch between operating systems hit `CTRL+ALT+FORWARD` or `CTRL+ALT+BACKWARDS`
