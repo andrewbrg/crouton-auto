@@ -100,6 +100,7 @@ cRepositories() {
     sudo add-apt-repository -y ppa:gnome3-team/gnome3-staging
     sudo add-apt-repository -y ppa:gnome3-team/gnome3
     sudo add-apt-repository -y ppa:notepadqq-team/notepadqq
+    sudo add-apt-repository -y ppa:tista/adapta
     
     sudo apt install -y curl apt-transport-https ca-certificates
     
@@ -120,9 +121,8 @@ cRepositories() {
 cUi() {
     title "Preparing the Gnome UI & Apps"
     sudo apt dist-upgrade -y
-    sudo apt install -y numix-icon-theme-circle gnome-tweak-tool gnome-terminal whoopsie gnome-control-center gnome-online-accounts
-    sudo apt install -y language-pack-en-base nano mlocate htop notepadqq preload inxi filezilla vlc bleachbit putty
-    sudo apt install -y gnome-shell-extension-dashtodock gnome-software gnome-software-common gnome-shell-pomodoro chrome-gnome-shell gnome-shell-extension-top-icons-plus
+    sudo apt install -y numix-icon-theme-circle whoopsie adapta-gtk-theme language-pack-en-base nano mlocate htop notepadqq preload inxi filezilla vlc bleachbit putty
+    sudo apt install -y gnome-tweak-tool gnome-terminal gnome-control-center gnome-online-accounts gnome-shell-extension-dashtodock gnome-software gnome-software-common gnome-shell-pomodoro chrome-gnome-shell gnome-shell-extension-top-icons-plus
 
     cd /tmp
     wget "http://launchpadlibrarian.net/228111194/gnome-disk-utility_3.18.3.1-1ubuntu1_amd64.deb" -O gnome-disk.deb
