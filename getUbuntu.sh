@@ -6,6 +6,7 @@
 SELF_NAME=`basename $0`
 SELF_PATH=`dirname $0`/${SELF_NAME}
 CROUTON_PATH=`dirname $0`/crouton
+PYCHARM_PATH=/usr/local/bin/pycharm
 PHPSTORM_PATH=/usr/local/bin/phpstorm
 INODE_NUM=`ls -id / | awk '{print $1}'`
 ROBO_MONGO_PATH=/usr/local/bin/robomongo
@@ -122,7 +123,7 @@ cRepositories() {
 cUi() {
     title "Preparing the Gnome UI & Apps"
     sudo apt dist-upgrade -y
-    sudo apt install -y numix-icon-theme-circle whoopsie adapta-gtk-theme language-pack-en-base nano mlocate htop notepadqq preload inxi filezilla vlc bleachbit putty midori
+    sudo apt install -y numix-icon-theme-circle whoopsie adapta-gtk-theme language-pack-en-base nano mlocate htop notepadqq preload inxi filezilla vlc bleachbit putty midori vim kiki terminator
     sudo apt install -y gnome-tweak-tool gnome-terminal gnome-control-center gnome-online-accounts gnome-shell-extension-dashtodock gnome-software gnome-software-common gnome-shell-pomodoro chrome-gnome-shell gnome-shell-extension-top-icons-plus
 
     cd /tmp
@@ -139,6 +140,11 @@ cUi() {
     wget "https://github.com/oguzhaninan/Stacer/releases/download/v1.0.8/Stacer_1.0.8_amd64.deb" -O stacer.deb
     sudo dpkg -i stacer.deb
     sudo rm stacer.deb
+
+
+    if [ -f /usr/share/applications/kiki.desktop ]; then
+        sudo sed -i "s/Icon=.*/Icon=regexxer/g" /usr/share/applications/kiki.desktop
+    fi
 
     breakLine
 }
@@ -316,6 +322,44 @@ cPhpStormIde() {
     breakLine
 }
 
+cPyCharmIde() {
+    title "PyCharm IDE"
+    if [ "$(askUser "Install PyCharm IDE")" -eq 1 ]; then
+        cd /tmp
+        wget "https://download.jetbrains.com/python/pycharm-community-2017.2.3.tar.gz" -O pycharm.tar.gz
+        sudo tar xf pycharm.tar.gz
+
+        if [ -d ${PYCHARM_PATH} ]; then
+            sudo rm -rf ${PYCHARM_PATH}
+        fi
+
+        sudo mkdir ${PYCHARM_PATH}
+        sudo mv pycharm-*/* ${PYCHARM_PATH}
+        sudo rm -rf pycharm-*/
+        sudo rm pycharm.tar.gz
+
+        local PYCHARM_LAUNCHER_PATH=/usr/share/applications/pycharm.desktop
+
+        if [ ! -f ${PYCHARM_LAUNCHER_PATH} ]; then
+            sudo touch ${PYCHARM_LAUNCHER_PATH}
+        fi
+
+        sudo truncate --size 0 ${PYCHARM_LAUNCHER_PATH}
+        sudo echo "[Desktop Entry]" >> ${PYCHARM_LAUNCHER_PATH}
+        sudo echo "Version=1.0" >> ${PYCHARM_LAUNCHER_PATH}
+        sudo echo "Type=Application" >> ${PYCHARM_LAUNCHER_PATH}
+        sudo echo "Name=PyCharm" >> ${PYCHARM_LAUNCHER_PATH}
+        sudo echo "Icon=pycharm" >> ${PYCHARM_LAUNCHER_PATH}
+        sudo echo "Exec=/usr/local/bin/pycharm/bin/pycharm" >> ${PYCHARM_LAUNCHER_PATH}
+        sudo echo "StartupWMClass=jetbrains-pycharm" >> ${PYCHARM_LAUNCHER_PATH}
+        sudo echo "Comment=The Drive to Develop" >> ${PYCHARM_LAUNCHER_PATH}
+        sudo echo "Categories=Development;IDE;" >> ${PYCHARM_LAUNCHER_PATH}
+        sudo echo "Terminal=false" >> ${PYCHARM_LAUNCHER_PATH}
+    fi
+    breakLine
+}
+
+
 cSlack() {
     title "Slack"
     if [ "$(askUser "Install Slack")" -eq 1 ]; then
@@ -424,6 +468,7 @@ configure() {
     cMongoDb
     cVsCodeIde
     cPhpStormIde
+    cPyCharmIde
     cSlack
     cFacebookMessenger
     cPopcornTime
