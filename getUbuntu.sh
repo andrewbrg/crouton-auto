@@ -133,6 +133,12 @@ cUi() {
     wget "https://builds.insomnia.rest/downloads/ubuntu/latest" -O insomnia.deb
     sudo dpkg -i insomnia.deb
     sudo rm insomnia.deb
+
+    cd /tmp
+    wget "https://github.com/oguzhaninan/Stacer/releases/download/v1.0.8/Stacer_1.0.8_amd64.deb" -O stacer.deb
+    sudo dpkg -i stacer.deb
+    sudo rm stacer.deb
+
     breakLine
 }
 
