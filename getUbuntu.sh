@@ -100,9 +100,6 @@ cRepositories() {
     sudo add-apt-repository -y ppa:numix/ppa
     sudo add-apt-repository -y ppa:gnome3-team/gnome3-staging
     sudo add-apt-repository -y ppa:gnome3-team/gnome3
-    sudo add-apt-repository -y ppa:notepadqq-team/notepadqq
-    sudo add-apt-repository -y ppa:tista/adapta
-    sudo apt-add-repository -y ppa:midori/ppa
     
     sudo apt install -y curl apt-transport-https ca-certificates
     
@@ -123,7 +120,7 @@ cRepositories() {
 cUi() {
     title "Preparing the Gnome UI & Apps"
     sudo apt dist-upgrade -y
-    sudo apt install -y numix-icon-theme-circle whoopsie adapta-gtk-theme language-pack-en-base nano mlocate htop notepadqq preload inxi filezilla vlc bleachbit putty midori vim fish kiki terminator
+    sudo apt install -y numix-icon-theme-circle whoopsie language-pack-en-base nano mlocate htop preload inxi filezilla vlc bleachbit putty vim fish kiki
     sudo apt install -y gnome-tweak-tool gnome-terminal gnome-control-center gnome-online-accounts gnome-shell-extension-dashtodock gnome-software gnome-software-common gnome-shell-pomodoro chrome-gnome-shell gnome-shell-extension-top-icons-plus
 
     cd /tmp
