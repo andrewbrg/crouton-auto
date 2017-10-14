@@ -362,6 +362,10 @@ cBracketsIde() {
     if [ "$(askUser "Install Brackets IDE")" -eq 1 ]; then
         cd /tmp
         sudo apt install -y libpangox-1.0-0 libpango1.0-0
+
+        if [ -d /opt/brackets/ ]; then
+            sudo rm -rf /opt/brackets/
+        fi
         wget "https://github.com/adobe/brackets/releases/download/release-1.11/Brackets.Release.1.11.64-bit.deb" -O brackets.deb
         sudo dpkg -i brackets.deb
         sudo rm brackets.deb
