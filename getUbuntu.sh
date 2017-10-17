@@ -55,7 +55,7 @@ install() {
 
     # If no crouton file exists get it
     if [ ! -f ${CROUTON_PATH} ]; then
-        title "Fetching crouton"
+        title "Fetching crouton..."
         wget "https://goo.gl/fd3zc" -O crouton
         breakLine
     fi
@@ -70,7 +70,7 @@ install() {
         fi
         
         # Setup Ubuntu
-        title "Ubuntu 16.04 on Chromebook"
+        title "Ubuntu 16.04 with Gnome on ChromeOS"
         if [ "$(askUser "Install Ubuntu 16.04 LTS (xenial)")" -eq 1 ]; then
             sudo sh ${CROUTON_PATH} -f ${BOOTSTRAP_PATH} -t ${TARGETS}
         fi
@@ -78,7 +78,7 @@ install() {
     fi
     
     # Launch Ubuntu & configure
-    title "Mounting chroot containing Ubuntu 16.04"
+    title "Mounting the Ubuntu 16.04 chroot"
     
     # Get chroot username
     CHROOT_USERNAME=`ls ${CHROOT_PATH}/home/ | awk '{print $1}'`
@@ -90,13 +90,13 @@ install() {
 ## Configuration
 ###############################################################
 cPreRequisites() {
-    title "Installing pre-requisites"
+    title "Installing package pre-requisites"
     sudo apt install -y locales software-properties-common python-software-properties
     breakLine
 }
 
 cRepositories() {
-    title "Setting up ubuntu repositories"
+    title "Setting up required Ubuntu 16.04 repositories"
     sudo add-apt-repository -y ppa:numix/ppa
     sudo add-apt-repository -y ppa:gnome3-team/gnome3-staging
     sudo add-apt-repository -y ppa:gnome3-team/gnome3
@@ -111,7 +111,7 @@ cRepositories() {
     sudo mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
     sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
     
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    curl -fsSL "https://download.docker.com/linux/ubuntu/gpg" | sudo apt-key add -
     sudo add-apt-repository -y "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
     
     sudo apt update -y
@@ -119,7 +119,7 @@ cRepositories() {
 }
 
 cUi() {
-    title "Preparing the Gnome UI & Apps"
+    title "Preparing the Gnome interface and useful applications"
     sudo apt dist-upgrade -y
     sudo apt install -y numix-icon-theme-circle whoopsie language-pack-en-base nano mlocate htop preload inxi filezilla vlc bleachbit putty vim fish kiki atom xarchiver p7zip p7zip-rar gimp inkscape
     sudo apt install -y gnome-tweak-tool gnome-terminal gnome-control-center gnome-online-accounts gnome-shell-extension-dashtodock gnome-software gnome-software-common gnome-shell-pomodoro chrome-gnome-shell gnome-shell-extension-top-icons-plus
@@ -148,19 +148,19 @@ cUi() {
 }
 
 cPhp() {
-    title "PHP 7.0"
-    if [ "$(askUser "Install PHP7.0")" -eq 1 ]; then
+    title "PHP v7.0"
+    if [ "$(askUser "Install PHP v7.0")" -eq 1 ]; then
         sudo apt install -y php7.0 php7.0-fpm php7.0-cli php7.0-common php7.0-mbstring php7.0-gd php7.0-intl php7.0-xml php7.0-mysql php7.0-mcrypt php7.0-zip php7.0-dev php-pear
         
         breakLine
         title "Composer"
-        if [ "$(askUser "Install Composer")" -eq 1 ]; then
-            sudo curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
+        if [ "$(askUser "Install Composer package manager for PHP")" -eq 1 ]; then
+            sudo curl -sS "https://getcomposer.org/installer" | sudo php -- --install-dir=/usr/local/bin --filename=composer
         fi
         
         breakLine
         title "Swoole"
-        if [ "$(askUser "Install Swoole")" -eq 1 ]; then
+        if [ "$(askUser "Install Swoole asynchronous PHP framework")" -eq 1 ]; then
             sudo pecl install -y swoole
         fi
     fi
@@ -168,48 +168,53 @@ cPhp() {
 }
 
 cNodeJs() {
-    title "Node JS"
-    if [ "$(askUser "Install NodeJS")" -eq 1 ]; then
-        curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+    title "NodeJS"
+    if [ "$(askUser "Install NodeJS v6.0 environment")" -eq 1 ]; then
+        curl -sL "https://deb.nodesource.com/setup_6.x" | sudo -E bash -
         sudo apt install -y build-essential nodejs
         
         breakLine
         title "Bower"
-        if [ "$(askUser "Install Bower")" -eq 1 ]; then
+        if [ "$(askUser "Install Bower package manager")" -eq 1 ]; then
             sudo npm install -y bower -g
         fi
         
         breakLine
         title "Gulp"
-        if [ "$(askUser "Install Gulp")" -eq 1 ]; then
+        if [ "$(askUser "Install Gulp pre-compiler")" -eq 1 ]; then
             sudo npm install -y gulp -g
         fi
 
         breakLine
         title "Nodemon"
-        if [ "$(askUser "Install Nodemon")" -eq 1 ]; then
+        if [ "$(askUser "Install Nodemon deamon")" -eq 1 ]; then
             sudo npm install -y nodemon -g
         fi
         
         breakLine
-        title "Meteor.JS"
-        if [ "$(askUser "Install Meteor.js")" -eq 1 ]; then
-            sudo curl https://install.meteor.com/ | sh
+        title "MeteorJS Framework"
+        if [ "$(askUser "Install the MeteorJS framework")" -eq 1 ]; then
+            sudo curl "https://install.meteor.com/" | sh
         fi
         
         breakLine
-        title "Vue Cli"
-        if [ "$(askUser "Install Vue")" -eq 1 ]; then
+        title "Vue Framework"
+        if [ "$(askUser "Install Vue CLI framework")" -eq 1 ]; then
             sudo npm install -y vue-cli -g
         fi
-        
+
+        breakLine
+        title "React framework"
+        if [ "$(askUser "Install the React and React Native frameworks")" -eq 1 ]; then
+            sudo npm install -y create-react-app create-react-native-app -g
+        fi
     fi
     breakLine
 }
 
 cGit() {
     title "Git"
-    if [ "$(askUser "Install Git")" -eq 1 ]; then
+    if [ "$(askUser "Install Git version control system")" -eq 1 ]; then
         sudo apt install -y git
     fi
     breakLine
@@ -217,7 +222,7 @@ cGit() {
 
 cDocker() {
     title "Docker"
-    if [ "$(askUser "Install Docker")" -eq 1 ]; then
+    if [ "$(askUser "Install Docker visualization environment")" -eq 1 ]; then
         sudo apt install -y docker-ce
     fi
     breakLine
@@ -225,7 +230,7 @@ cDocker() {
 
 cMySqlWorkbench() {
     title "MySQL Workbench"
-    if [ "$(askUser "Install MySQL Workbench")" -eq 1 ]; then
+    if [ "$(askUser "Install MySQL Workbench database manager")" -eq 1 ]; then
         sudo apt install -y mysql-workbench
     fi
     breakLine
@@ -238,7 +243,7 @@ cMongoDb() {
         
         breakLine
         title "RoboMongo (Robo 3T)"
-        if [ "$(askUser "Install RoboMongo")" -eq 1 ]; then
+        if [ "$(askUser "Install RoboMongo database manager")" -eq 1 ]; then
             sudo apt install -y xcb
             cd /tmp
             wget "https://download.robomongo.org/1.1.1/linux/robo3t-1.1.1-linux-x86_64-c93c6b0.tar.gz" -O robomongo.tar.gz
@@ -359,7 +364,7 @@ cPyCharmIde() {
 
 cBracketsIde() {
     title "Brackets IDE"
-    if [ "$(askUser "Install Brackets IDE")" -eq 1 ]; then
+    if [ "$(askUser "Install Adobe Brackets IDE")" -eq 1 ]; then
         cd /tmp
         sudo apt install -y libpangox-1.0-0 libpango1.0-0
 
@@ -376,7 +381,7 @@ cBracketsIde() {
 
 cSlack() {
     title "Slack"
-    if [ "$(askUser "Install Slack")" -eq 1 ]; then
+    if [ "$(askUser "Install Slack dev chat")" -eq 1 ]; then
         sudo apt install -y slack-desktop gvfs-bin gir1.2-gnomekeyring-1.0
 
         local SLACK_LAUNCHER_PATH=/usr/share/applications/slack.desktop
@@ -413,7 +418,7 @@ cFacebookMessenger() {
 
 cPopcornTime() {
     title "Popcorn Time (because why not? :p)"
-    if [ "$(askUser "Install Popcorn Time")" -eq 1 ]; then
+    if [ "$(askUser "Install Popcorn Time (you deserve it)")" -eq 1 ]; then
         if [ ! -d /opt/popcorn-time ]; then
             sudo rm -rf /opt/popcorn-time
         fi
@@ -452,7 +457,7 @@ cLocalesPlusKeymap() {
 }
 
 cClean() {
-    title "Cleaning up"
+    title "Cleaning up..."
     sudo apt remove -y xterm netsurf netsurf-common netsurf-fb netsurf-gtk
     sudo apt update -y
     sudo apt --purge autoremove -y
@@ -473,7 +478,7 @@ configure() {
         cUi
     fi
     
-    # Apps setup
+    # Systems setup
     cPhp
     cNodeJs
     cGit
