@@ -4,20 +4,19 @@
    
 ![3fa4bf29a8d83625909b76abb99537e9.jpg](http://pichoster.net/images/2017/10/03/3fa4bf29a8d83625909b76abb99537e9.jpg)
    
-This is a handy script to automatically set up an Ubuntu dev machine on your chromebook. The Ubuntu will be installed in a chroot along with your current Chrome operating system (you can run two operating systems in parallel). The Crouton project is developed/maintained by David Schneider @ https://github.com/dnschneid  
+This is a handy script to automatically set up an Ubuntu dev machine on your chromebook. The Ubuntu will be installed in a chroot along with your current Chrome operating system _(you can run two operating systems in parallel)_. The Crouton project is developed/maintained by David Schneider @ https://github.com/dnschneid  
 
 **This script is made for AMD64 processors**, if you have an ARM processor some packages will not function. Fully tested on Acer Chromebook 14.
 
-Your Chromebook must be in developer mode in order to use this script. It is also highly recommended that you install the chrome crouton extension for added functionality.
+Your Chromebook must be in developer mode in order to use this script. It is also highly recommended that you install the crouton chrome extension for added functionality including a shared clipboard between operating systems. You may get the latest version directly from the chrome store: https://chrome.google.com/webstore/detail/crouton-integration/gcpneefbbnfalgjniomfjknbcgkbijom
 
 **Resources to check out** 
 
 | Type | Link |
 | ------ | ------ |
-| Crouton Git | https://github.com/dnschneid/crouton |
-| Crouton Cheat Sheet | https://github.com/dnschneid/crouton/wiki/Crouton-Command-Cheat-Sheet |
+| Crouton GitHub | https://github.com/dnschneid/crouton |
+| Crouton Cheatsheet | https://github.com/dnschneid/crouton/wiki/Crouton-Command-Cheat-Sheet |
 | Crouton Wiki | https://github.com/dnschneid/crouton/wiki |
-| Crouton Chrome Extension | https://chrome.google.com/webstore/detail/crouton-integration/gcpneefbbnfalgjniomfjknbcgkbijom |
   
 ***
   
