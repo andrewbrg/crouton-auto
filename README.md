@@ -1,5 +1,5 @@
 
-# Linux 16.04 Xenial on ChromeOS via Crouton
+# Linux 16.04 (Xenial) dual OS on ChromeOS via Crouton
    
    
 ![3fa4bf29a8d83625909b76abb99537e9.jpg](http://pichoster.net/images/2017/10/03/3fa4bf29a8d83625909b76abb99537e9.jpg)
@@ -31,7 +31,17 @@ After the installation is complete you can launch Ubuntu by opening a crosh term
 
 ```shell
 shell  
+sudo startgnome
+```
+
+If you want to be able to close the crosh terminal without Ubuntu un-mounting itself as a consequence use the following:
+
+```shell
 sudo startgnome -b
 ```
 
-Once in Ubuntu i'd recommend loading up the Gnome Tweak Tool _(which has been pre-installed)_ and selecting the `global dark theme` and the `numix-circle` icons. To switch between operating systems hit `CTRL+ALT+SHIFT+FORWARD` or `CTRL+ALT+SHIFT+BACKWARDS`
+Once in Ubuntu i'd recommend loading up the Gnome Tweak Tool _(which has been pre-installed by this script)_ and selecting the `global dark theme` and the `numix-circle` icons. Also go ahead and enable the `Pomodoro`, `Dash to dock` and `Topicons plus` UI extensions within the Gnome Tweak Tool as desired.
+
+To switch between operating systems hit `CTRL+ALT+SHIFT+FORWARD` or `CTRL+ALT+SHIFT+BACKWARDS`.
+
+It's important to logout from Ubuntu once before powering down your system to avoid potential corruption to the mounted root.

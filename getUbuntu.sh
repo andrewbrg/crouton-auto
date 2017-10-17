@@ -122,7 +122,7 @@ cUi() {
     title "Preparing the Gnome interface and useful applications"
     sudo apt dist-upgrade -y
     sudo apt install -y numix-icon-theme-circle whoopsie language-pack-en-base nano mlocate htop preload inxi filezilla vlc bleachbit putty vim fish kiki atom xarchiver p7zip p7zip-rar gimp inkscape
-    sudo apt install -y gnome-tweak-tool gnome-terminal gnome-control-center gnome-online-accounts gnome-shell-extension-dashtodock gnome-software gnome-software-common gnome-shell-pomodoro chrome-gnome-shell gnome-shell-extension-top-icons-plus
+    sudo apt install -y gnome-tweak-tool gnome-terminal gnome-control-center gnome-online-accounts gnome-shell-extension-dashtodock gnome-software gnome-software-common gnome-shell-pomodoro chrome-gnome-shell gnome-shell-extension-top-icons-plus gnome-shell-extension-taskbar gnome-shell-extensions-gpaste
 
     cd /tmp
     wget "http://launchpadlibrarian.net/228111194/gnome-disk-utility_3.18.3.1-1ubuntu1_amd64.deb" -O gnome-disk.deb
