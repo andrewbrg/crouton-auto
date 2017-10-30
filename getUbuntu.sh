@@ -119,10 +119,11 @@ cRepositories() {
 }
 
 cUi() {
-    title "Preparing the Gnome interface and useful applications"
+    title "Preparing the Gnome interface / applications"
     sudo apt dist-upgrade -y
-    sudo apt install -y numix-icon-theme-circle whoopsie language-pack-en-base nano mlocate htop preload inxi filezilla vlc bleachbit putty vim fish kiki atom xarchiver p7zip p7zip-rar gimp inkscape
+    sudo apt install -y numix-icon-theme-circle whoopsie language-pack-en-base nano mlocate htop preload inxi filezilla vlc bleachbit putty vim fish kiki atom xarchiver p7zip p7zip-rar
     sudo apt install -y gnome-tweak-tool gnome-terminal gnome-control-center gnome-online-accounts gnome-shell-extension-dashtodock gnome-software gnome-software-common gnome-shell-pomodoro chrome-gnome-shell gnome-shell-extension-top-icons-plus gnome-shell-extension-taskbar gnome-shell-extensions-gpaste
+    sudo apt install -y clamav clamav-daemon clamav-freshclam clamtk
 
     cd /tmp
     wget "http://launchpadlibrarian.net/228111194/gnome-disk-utility_3.18.3.1-1ubuntu1_amd64.deb" -O gnome-disk.deb
@@ -204,8 +205,8 @@ cNodeJs() {
         fi
 
         breakLine
-        title "React framework"
-        if [ "$(askUser "Install the React and React Native frameworks")" -eq 1 ]; then
+        title "React Framework"
+        if [ "$(askUser "Install the React / React Native frameworks")" -eq 1 ]; then
             sudo npm install -y create-react-app create-react-native-app -g
         fi
     fi
@@ -242,7 +243,7 @@ cMongoDb() {
         sudo apt install -y mongodb-org
         
         breakLine
-        title "RoboMongo (Robo 3T)"
+        title "RoboMongo (Robo3T)"
         if [ "$(askUser "Install RoboMongo database manager")" -eq 1 ]; then
             sudo apt install -y xcb
             cd /tmp
@@ -381,9 +382,8 @@ cBracketsIde() {
 
 cSlack() {
     title "Slack"
-    if [ "$(askUser "Install Slack dev chat")" -eq 1 ]; then
+    if [ "$(askUser "Install Slack chat")" -eq 1 ]; then
         sudo apt install -y slack-desktop gvfs-bin gir1.2-gnomekeyring-1.0
-
         local SLACK_LAUNCHER_PATH=/usr/share/applications/slack.desktop
 
         if [ ! -f ${SLACK_LAUNCHER_PATH} ]; then
@@ -460,7 +460,7 @@ cClean() {
     title "Cleaning up..."
     sudo apt remove -y xterm netsurf netsurf-common netsurf-fb netsurf-gtk
     sudo apt update -y
-    sudo apt --purge autoremove -y
+    sudo apt autoremove --purge -y
     sudo updatedb
     breakLine
 }
