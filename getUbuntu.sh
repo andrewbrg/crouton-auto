@@ -191,6 +191,12 @@ cNodeJs() {
         if [ "$(askUser "Install Nodemon deamon")" -eq 1 ]; then
             sudo npm install -y nodemon -g
         fi
+
+        breakLine
+        title "Browserify"
+        if [ "$(askUser "Install Browserify")" -eq 1 ]; then
+            sudo npm install -y browserify -g
+        fi
         
         breakLine
         title "MeteorJS Framework"
