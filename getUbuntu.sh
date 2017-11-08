@@ -49,16 +49,38 @@ askUser() {
 ###############################################################
 ## Installation
 ###############################################################
-install() {
+fetchCrouton() {
+
     # Move to the downloads folder, we'll work in here
     cd ${DOWNLOADS_PATH}
 
-    # If no crouton file exists get it
     if [ ! -f ${CROUTON_PATH} ]; then
         title "Fetching crouton..."
         wget "https://goo.gl/fd3zc" -O crouton
         breakLine
     fi
+}
+
+updateChroot() {
+
+    # Move to the downloads folder, we'll work in here
+    cd ${DOWNLOADS_PATH}
+
+    # If no crouton file exists get it
+    fetchCrouton
+
+    title "Updating your chroot installation"
+    sudo sh ${CROUTON_PATH} -n xenial -u
+    breakLine
+}
+
+install() {
+
+    # Move to the downloads folder, we'll work in here
+    cd ${DOWNLOADS_PATH}
+
+    # If no crouton file exists get it
+    fetchCrouton
     
     # If no chroot is setup
     if [ ! -d ${CHROOT_PATH} ]; then
@@ -514,7 +536,12 @@ configure() {
 clear
 if [ ${INODE_NUM} -eq 2 ];
     then
-        install
-    else
-        configure
+        while getopts :u option
+            do
+                case "${option}" in
+                    u) updateChroot;;
+                    ?) install;;
+                esac
+        done
+    else configure
 fi

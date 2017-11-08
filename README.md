@@ -4,6 +4,9 @@
    
 ![3fa4bf29a8d83625909b76abb99537e9.jpg](http://pichoster.net/images/2017/10/03/3fa4bf29a8d83625909b76abb99537e9.jpg)
    
+   
+Download latest version here: [https://goo.gl/JsNbP8](https://goo.gl/JsNbP8)
+
 This is a handy script to automatically set up an Ubuntu dev machine on your chromebook. The Ubuntu will be installed in a chroot along with your current Chrome operating system _(you can run two operating systems in parallel)_. The Crouton project is developed/maintained by David Schneider @ https://github.com/dnschneid  
 
 **This script is made for AMD64 processors**, if you have an ARM processor some packages will not function. Fully tested on Acer Chromebook 14.
@@ -37,6 +40,7 @@ sudo startgnome
 If you want to be able to close the crosh terminal without Ubuntu un-mounting itself as a consequence use the following:
 
 ```shell
+shell
 sudo startgnome -b
 ```
 
@@ -45,3 +49,11 @@ Once in Ubuntu i'd recommend loading up the Gnome Tweak Tool _(which has been pr
 To switch between operating systems hit `CTRL+ALT+SHIFT+FORWARD` or `CTRL+ALT+SHIFT+BACKWARDS`.
 
 It's important to logout from Ubuntu once before powering down your system to avoid potential corruption to the mounted root.
+
+**I've updated ChromeOS and Ubuntu is acting up**
+If you want to run a full update of the Ubuntu installation in your chroot or you've updated ChromeOS and Ubuntu is not working properly anymore then run the following from crosh
+
+```shell
+shell
+sudo sh ~/Downloads/getUbuntu.sh -u
+```
