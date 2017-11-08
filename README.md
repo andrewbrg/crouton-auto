@@ -51,6 +51,7 @@ To switch between operating systems hit `CTRL+ALT+SHIFT+FORWARD` or `CTRL+ALT+SH
 It's important to logout from Ubuntu once before powering down your system to avoid potential corruption to the mounted root.
 
 **I've updated ChromeOS and Ubuntu is acting up**
+
 If you want to run a full update of the Ubuntu installation in your chroot or you've updated ChromeOS and Ubuntu is not working properly anymore then run the following from crosh
 
 ```shell
