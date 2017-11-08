@@ -122,8 +122,9 @@ cUi() {
     title "Preparing the Gnome interface / applications"
     sudo apt dist-upgrade -y
     sudo apt install -y numix-icon-theme-circle whoopsie language-pack-en-base nano mlocate htop preload inxi filezilla vlc bleachbit putty vim fish kiki atom xarchiver p7zip p7zip-rar
-    sudo apt install -y gnome-tweak-tool gnome-terminal gnome-control-center gnome-online-accounts gnome-shell-extension-dashtodock gnome-software gnome-software-common gnome-shell-pomodoro chrome-gnome-shell gnome-shell-extension-top-icons-plus gnome-shell-extension-taskbar gnome-shell-extensions-gpaste
-    sudo apt install -y clamav clamav-daemon clamav-freshclam clamtk
+    sudo apt install -y gnome-tweak-tool gnome-terminal gnome-control-center gnome-online-accounts gnome-software gnome-software-common
+    sudo apt install -y gnome-shell chrome-gnome-shell
+    sudo apt install -y gnome-shell-extensions gnome-shell-extension-dashtodock gnome-shell-pomodoro gnome-shell-extension-taskbar gnome-shell-extensions-gpaste
 
     cd /tmp
     wget "http://launchpadlibrarian.net/228111194/gnome-disk-utility_3.18.3.1-1ubuntu1_amd64.deb" -O gnome-disk.deb
@@ -140,11 +141,14 @@ cUi() {
     sudo dpkg -i stacer.deb
     sudo rm stacer.deb
 
-
     if [ -f /usr/share/applications/kiki.desktop ]; then
         sudo sed -i "s/Icon=.*/Icon=regexxer/g" /usr/share/applications/kiki.desktop
     fi
 
+    breakLine
+
+    title "Installing ClamAV"
+    sudo apt install -y clamav clamav-daemon clamav-freshclam clamtk
     breakLine
 }
 
