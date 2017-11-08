@@ -5,7 +5,7 @@
 ![3fa4bf29a8d83625909b76abb99537e9.jpg](http://pichoster.net/images/2017/10/03/3fa4bf29a8d83625909b76abb99537e9.jpg)
    
    
-Download latest version here: [https://goo.gl/JsNbP8](https://goo.gl/JsNbP8)
+Download latest version here: [https://goo.gl/mDtkJQ](https://goo.gl/mDtkJQ)
 
 This is a handy script to automatically set up an Ubuntu dev machine on your chromebook. The Ubuntu will be installed in a chroot along with your current Chrome operating system _(you can run two operating systems in parallel)_. The Crouton project is developed/maintained by David Schneider @ https://github.com/dnschneid  
 
