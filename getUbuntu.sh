@@ -123,7 +123,7 @@ cRepositories() {
     sudo add-apt-repository -y ppa:gnome3-team/gnome3-staging
     sudo add-apt-repository -y ppa:gnome3-team/gnome3
     sudo add-apt-repository -y ppa:webupd8team/atom
-    
+
     sudo apt install -y curl apt-transport-https ca-certificates
     
     sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6
@@ -444,6 +444,17 @@ cFacebookMessenger() {
         wget "https://updates.messengerfordesktop.com/download/linux/latest/beta?arch=amd64&pkg=deb" -O messenger.deb
         sudo dpkg -i messenger.deb
         sudo rm messenger.deb
+    fi
+    breakLine
+}
+
+cSkype () {
+    title "Skype Messenger"
+    if [ "$(askUser "Install Skype Messenger")" -eq 1 ]; then
+        cd /tmp
+        wget "https://go.skype.com/skypeforlinux-64.deb" -O skypeforlinux.deb
+        sudo dpkg -i skypeforlinux.deb
+        sudo rm skypeforlinux.deb
     fi
     breakLine
 }
