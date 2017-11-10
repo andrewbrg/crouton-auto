@@ -44,7 +44,7 @@ shell
 sudo startgnome -b
 ```
 
-Once in Ubuntu i'd recommend loading up the Gnome Tweak Tool _(which has been pre-installed by this script)_ and selecting the `global dark theme` and the `numix-circle` icons. Also go ahead and enable the `Pomodoro`, `Dash to dock` and `Topicons plus` UI extensions within the Gnome Tweak Tool as desired.
+Once in Ubuntu i'd recommend loading up the Gnome Tweak Tool _(which has been pre-installed by this script)_ and selecting the `global dark theme` and the `numix-circle` icons. Also go ahead and enable the `Pomodoro`, `Dash to dock` and any other UI shell extensions within the Gnome Tweak Tool as desired.
 
 To switch between operating systems hit `CTRL+ALT+SHIFT+FORWARD` or `CTRL+ALT+SHIFT+BACKWARDS`.
 
