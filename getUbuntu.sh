@@ -14,8 +14,8 @@ BOOTSTRAP_PATH=`dirname $0`/xenial.tar.bz2
 DOWNLOADS_PATH=/home/chronos/user/Downloads
 CHROOT_PATH=/mnt/stateful_partition/crouton/chroots/xenial
 TARGETS=cli-extra,xorg,xiwi,extension,keyboard,audio,chrome,gnome
-    
-    
+
+
 ###############################################################
 ## Helpers
 ###############################################################
@@ -81,7 +81,7 @@ install() {
 
     # If no crouton file exists get it
     fetchCrouton
-    
+
     # If no chroot is setup
     if [ ! -d ${CHROOT_PATH} ]; then
         # Prepare a bootstrap
@@ -90,7 +90,7 @@ install() {
             sudo sh ${CROUTON_PATH} -d -f ${BOOTSTRAP_PATH} -r xenial -t ${TARGETS}
             breakLine
         fi
-        
+
         # Setup Ubuntu
         title "Ubuntu 16.04 with Gnome on ChromeOS"
         if [ "$(askUser "Install Ubuntu 16.04 LTS (xenial)")" -eq 1 ]; then
@@ -98,10 +98,10 @@ install() {
         fi
         breakLine
     fi
-    
+
     # Launch Ubuntu & configure
     title "Mounting the Ubuntu 16.04 chroot"
-    
+
     # Get chroot username
     CHROOT_USERNAME=`ls ${CHROOT_PATH}/home/ | awk '{print $1}'`
     sudo enter-chroot -n xenial -l sh /home/${CHROOT_USERNAME}/Downloads/${SELF_NAME}
@@ -125,17 +125,17 @@ cRepositories() {
     sudo add-apt-repository -y ppa:webupd8team/atom
 
     sudo apt install -y curl apt-transport-https ca-certificates
-    
+
     sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6
     sudo echo "deb [arch=amd64,arm64] http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.4 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.4.list
-    
+
     curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
     sudo mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
     sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
-    
+
     curl -fsSL "https://download.docker.com/linux/ubuntu/gpg" | sudo apt-key add -
     sudo add-apt-repository -y "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-    
+
     sudo apt update -y
     breakLine
 }
@@ -178,13 +178,13 @@ cPhp() {
     title "PHP v7.0"
     if [ "$(askUser "Install PHP v7.0")" -eq 1 ]; then
         sudo apt install -y php7.0 php7.0-fpm php7.0-cli php7.0-common php7.0-mbstring php7.0-gd php7.0-intl php7.0-xml php7.0-mysql php7.0-mcrypt php7.0-zip php7.0-dev php-pear
-        
+
         breakLine
         title "Composer"
         if [ "$(askUser "Install Composer package manager for PHP")" -eq 1 ]; then
             sudo curl -sS "https://getcomposer.org/installer" | sudo php -- --install-dir=/usr/local/bin --filename=composer
         fi
-        
+
         breakLine
         title "Swoole"
         if [ "$(askUser "Install Swoole asynchronous PHP framework")" -eq 1 ]; then
@@ -199,13 +199,13 @@ cNodeJs() {
     if [ "$(askUser "Install NodeJS v6.0 environment")" -eq 1 ]; then
         curl -sL "https://deb.nodesource.com/setup_6.x" | sudo -E bash -
         sudo apt install -y build-essential nodejs
-        
+
         breakLine
         title "Bower"
         if [ "$(askUser "Install Bower package manager")" -eq 1 ]; then
             sudo npm install -y bower -g
         fi
-        
+
         breakLine
         title "Gulp"
         if [ "$(askUser "Install Gulp pre-compiler")" -eq 1 ]; then
@@ -223,13 +223,13 @@ cNodeJs() {
         if [ "$(askUser "Install Browserify")" -eq 1 ]; then
             sudo npm install -y browserify -g
         fi
-        
+
         breakLine
         title "MeteorJS Framework"
         if [ "$(askUser "Install the MeteorJS framework")" -eq 1 ]; then
             sudo curl "https://install.meteor.com/" | sh
         fi
-        
+
         breakLine
         title "Vue Framework"
         if [ "$(askUser "Install Vue CLI framework")" -eq 1 ]; then
@@ -273,18 +273,18 @@ cMongoDb() {
     title "MongoDB"
     if [ "$(askUser "Install MongoDB server")" -eq 1 ]; then
         sudo apt install -y mongodb-org
-        
+
         breakLine
         title "RoboMongo (Robo3T)"
         if [ "$(askUser "Install RoboMongo database manager")" -eq 1 ]; then
             sudo apt install -y xcb
             cd /tmp
             wget "https://download.robomongo.org/1.1.1/linux/robo3t-1.1.1-linux-x86_64-c93c6b0.tar.gz" -O robomongo.tar.gz
-            
+
             if [ -d ${ROBO_MONGO_PATH} ]; then
                 sudo rm -rf ${ROBO_MONGO_PATH}
             fi
-            
+
             sudo mkdir ${ROBO_MONGO_PATH}
             sudo tar xf robomongo.tar.gz
             sudo rm robomongo.tar.gz
@@ -292,13 +292,13 @@ cMongoDb() {
             sudo rm -rf robo3t-*/
             sudo rm ${ROBO_MONGO_PATH}/lib/libstdc++*
             sudo chmod +x ${ROBO_MONGO_PATH}/bin/robo3t
-            
+
             local ROBO_MONGO_LAUNCHER_PATH=/usr/share/applications/robomongo.desktop
-            
+
             if [ ! -f ${ROBO_MONGO_LAUNCHER_PATH} ]; then
                 sudo touch ${ROBO_MONGO_LAUNCHER_PATH}
             fi
-            
+
             sudo truncate --size 0 ${ROBO_MONGO_LAUNCHER_PATH}
             sudo echo "[Desktop Entry]" >> ${ROBO_MONGO_LAUNCHER_PATH}
             sudo echo "Name=Robomongo" >> ${ROBO_MONGO_LAUNCHER_PATH}
@@ -327,22 +327,22 @@ cPhpStormIde() {
         cd /tmp
         wget "https://download.jetbrains.com/webide/PhpStorm-2017.2.4.tar.gz" -O phpstorm.tar.gz
         sudo tar xf phpstorm.tar.gz
-        
+
         if [ -d ${PHPSTORM_PATH} ]; then
             sudo rm -rf ${PHPSTORM_PATH}
         fi
-        
+
         sudo mkdir ${PHPSTORM_PATH}
         sudo mv PhpStorm-*/* ${PHPSTORM_PATH}
         sudo rm -rf PhpStorm-*/
         sudo rm phpstorm.tar.gz
-        
+
         local PHPSTORM_LAUNCHER_PATH=/usr/share/applications/phpstorm.desktop
-            
+
         if [ ! -f ${PHPSTORM_LAUNCHER_PATH} ]; then
             sudo touch ${PHPSTORM_LAUNCHER_PATH}
         fi
-        
+
         sudo truncate --size 0 ${PHPSTORM_LAUNCHER_PATH}
         sudo echo "[Desktop Entry]" >> ${PHPSTORM_LAUNCHER_PATH}
         sudo echo "Version=1.0" >> ${PHPSTORM_LAUNCHER_PATH}
@@ -509,10 +509,10 @@ cClean() {
 }
 
 configure() {
-    
+
     # Set the home variable
     export HOME=/home/`ls /home/ | awk '{print $1}'`
-    
+
     # OS setup
     local IS_OS_SETUP=`dpkg -l | grep preload | awk '{print $1}'`
     if [ "$IS_OS_SETUP" = "" ]; then
@@ -520,7 +520,7 @@ configure() {
         cRepositories
         cUi
     fi
-    
+
     # Systems setup
     cPhp
     cNodeJs
