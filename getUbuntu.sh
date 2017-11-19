@@ -547,15 +547,15 @@ configure() {
 clear
 if [ ${INODE_NUM} -eq 2 ];
     then
-      if [ $# -eq 0 ];
-        then
-          install
+        if [ $# -eq 0 ];
+            then
+            install
         else while getopts :u option
-          do
-            case "${option}" in
-              u) updateChroot;;
-            esac
-        done
-      fi
+            do
+                case "${option}" in
+                u) updateChroot;;
+                esac
+            done
+        fi
     else configure
 fi
