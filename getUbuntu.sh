@@ -56,7 +56,7 @@ fetchCrouton() {
 
     if [ ! -f ${CROUTON_PATH} ]; then
         title "Fetching crouton..."
-        wget "https://goo.gl/fd3zc" -O crouton
+        curl "https://goo.gl/fd3zc" --output crouton
         breakLine
     fi
 }
