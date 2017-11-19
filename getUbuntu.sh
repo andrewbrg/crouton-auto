@@ -56,7 +56,7 @@ fetchCrouton() {
 
     if [ ! -f ${CROUTON_PATH} ]; then
         title "Fetching crouton..."
-        curl "https://goo.gl/fd3zc" --output crouton
+        curl "https://github.com/dnschneid/crouton/raw/master/installer/crouton" --output crouton
         breakLine
     fi
 }
