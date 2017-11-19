@@ -225,21 +225,27 @@ cNodeJs() {
         fi
 
         breakLine
-        title "MeteorJS Framework"
-        if [ "$(askUser "Install the MeteorJS framework")" -eq 1 ]; then
+        title "MeteorJS Library"
+        if [ "$(askUser "Install the MeteorJS SDK")" -eq 1 ]; then
             sudo curl "https://install.meteor.com/" | sh
         fi
 
         breakLine
-        title "Vue Framework"
-        if [ "$(askUser "Install Vue CLI framework")" -eq 1 ]; then
+        title "Vue Library"
+        if [ "$(askUser "Install Vue CLI SDK")" -eq 1 ]; then
             sudo npm install -y vue-cli -g
         fi
 
         breakLine
-        title "React Framework"
-        if [ "$(askUser "Install the React / React Native frameworks")" -eq 1 ]; then
+        title "React Library"
+        if [ "$(askUser "Install the React/React Native SDKs")" -eq 1 ]; then
             sudo npm install -y create-react-app create-react-native-app -g
+        fi
+
+        breakLine
+        title "AngularJS Framework"
+        if [ "$(askUser "Install the Angular CLI, Service Worker & PWA tools framework")" -eq 1 ]; then
+            sudo npm install -y @angular/cli @angular/service-worker ng-pwa-tools -g
         fi
     fi
     breakLine
