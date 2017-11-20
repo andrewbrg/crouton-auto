@@ -468,7 +468,7 @@ cSkype () {
 cPopcornTime() {
     title "Popcorn Time (because why not? :p)"
     if [ "$(askUser "Install Popcorn Time (you deserve it)")" -eq 1 ]; then
-        if [ ! -d /opt/popcorn-time ]; then
+        if [ -d /opt/popcorn-time ]; then
             sudo rm -rf /opt/popcorn-time
         fi
 
