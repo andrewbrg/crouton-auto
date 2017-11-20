@@ -22,8 +22,18 @@ Your Chromebook must be in developer mode in order to use this script. It is als
 | Crouton Wiki | https://github.com/dnschneid/crouton/wiki |
   
 ***
+
+## What is a chroot?
+
+A chroot is basically a special directory on your computer which prevents applications, if run from inside that directory, from accessing files outside the directory. In many ways, a chroot is like installing another operating system inside your existing operating system.
+
+Technically-speaking, chroot temporarily changes the root directory (which is normally /) to the chroot directory (for example, /var/chroot). As the root directory is the top of the filesystem hierarchy, applications are unable to access directories higher up than the root directory, and so are isolated from the rest of the system. This prevents applications inside the chroot from interfering with files elsewhere on your computer.
+
+Note that it is possible for software from outside the chroot to access files inside the chroot.
   
-**Ready? let's go!** After placing your Chromebook into developer mode, launch a crosh terminal by hitting `CTRL+ALT+T` then type in the following commands:
+## Ready? let's go!
+
+After placing your Chromebook into developer mode, launch a crosh terminal by hitting `CTRL+ALT+T` then type in the following commands:
 
 ```shell
 shell  
@@ -49,6 +59,8 @@ Once in Ubuntu i'd recommend loading up the Gnome Tweak Tool _(which has been pr
 To switch between operating systems hit `CTRL+ALT+SHIFT+FORWARD` or `CTRL+ALT+SHIFT+BACKWARDS`.
 
 It's important to logout from Ubuntu once before powering down your system to avoid potential corruption to the mounted root.
+
+## Updating your chroot
 
 **I've updated ChromeOS and Ubuntu is acting up**
 
