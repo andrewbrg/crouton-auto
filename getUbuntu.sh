@@ -469,7 +469,7 @@ cPopcornTime() {
     title "Popcorn Time (because why not? :p)"
     if [ "$(askUser "Install Popcorn Time (you deserve it)")" -eq 1 ]; then
         if [ -d /opt/popcorn-time ]; then
-            sudo rm -rf /opt/popcorn-time
+            sudo rm -rf /opt/popcorn-time/
         fi
 
         sudo mkdir /opt/popcorn-time
@@ -488,7 +488,7 @@ cPopcornTime() {
         sudo echo "Terminal=false" >> ${POPCORN_TIME_LAUNCHER_PATH}
         sudo echo "Type=Application" >> ${POPCORN_TIME_LAUNCHER_PATH}
         sudo echo "Name=Popcorn Time" >> ${POPCORN_TIME_LAUNCHER_PATH}
-        sudo echo "Icon=phpstorm" >> ${POPCORN_TIME_LAUNCHER_PATH}
+        sudo echo "Icon=popcorntime" >> ${POPCORN_TIME_LAUNCHER_PATH}
         sudo echo "Exec=/opt/popcorn-time/Popcorn-Time" >> ${POPCORN_TIME_LAUNCHER_PATH}
         sudo echo "StartupWMClass=Chromium-browser" >> ${POPCORN_TIME_LAUNCHER_PATH}
         sudo echo "Categories=Application;" >> ${POPCORN_TIME_LAUNCHER_PATH}
