@@ -122,7 +122,6 @@ cRepositories() {
     sudo add-apt-repository -y ppa:numix/ppa
     sudo add-apt-repository -y ppa:gnome3-team/gnome3-staging
     sudo add-apt-repository -y ppa:gnome3-team/gnome3
-    sudo add-apt-repository -y ppa:webupd8team/atom
 
     sudo apt install -y curl apt-transport-https ca-certificates
 
@@ -143,7 +142,7 @@ cRepositories() {
 cUi() {
     title "Preparing the Gnome interface / applications"
     sudo apt dist-upgrade -y
-    sudo apt install -y numix-icon-theme-circle whoopsie language-pack-en-base nano mlocate htop preload inxi filezilla vlc bleachbit putty vim fish kiki atom xarchiver p7zip p7zip-rar
+    sudo apt install -y numix-icon-theme-circle whoopsie language-pack-en-base nano mlocate htop preload inxi filezilla vlc bleachbit putty vim fish kiki xarchiver p7zip p7zip-rar
     sudo apt install -y gnome-tweak-tool gnome-terminal gnome-control-center gnome-online-accounts gnome-software gnome-software-common
     sudo apt install -y gnome-shell chrome-gnome-shell
     sudo apt install -y gnome-shell-extensions gnome-shell-extension-dashtodock gnome-shell-pomodoro gnome-shell-extension-taskbar gnome-shell-extensions-gpaste
@@ -174,6 +173,16 @@ cUi() {
     breakLine
 }
 
+cAtom() {
+    title "Atom IDE"
+    if ["$(askUser "Install Atom")" -eq 0]; then
+        cd /tmp
+        wget "https://github.com/atom/atom/releases/download/v1.23.3/atom-amd64.deb" -O atom.deb
+        sudo dpkg -i atom.deb
+        sudo rm atom.deb
+    fi
+}
+
 cPhp() {
     title "PHP v7.0"
     if [ "$(askUser "Install PHP v7.0")" -eq 1 ]; then
@@ -196,10 +205,11 @@ cPhp() {
 
 cNodeJs() {
     title "NodeJS"
-    if [ "$(askUser "Install NodeJS v6.0 environment")" -eq 1 ]; then
-        curl -sL "https://deb.nodesource.com/setup_6.x" | sudo -E bash -
+    if [ "$(askUser "Install NodeJS environment version 8?")" -eq 1 ]; then
+        curl -sL "https://deb.nodesource.com/setup_8.x" | sudo -E bash -
         sudo apt install -y build-essential nodejs
-
+        npm i -g npm
+        
         breakLine
         title "Bower"
         if [ "$(askUser "Install Bower package manager")" -eq 1 ]; then
@@ -209,7 +219,7 @@ cNodeJs() {
         breakLine
         title "Gulp"
         if [ "$(askUser "Install Gulp pre-compiler")" -eq 1 ]; then
-            sudo npm install -y gulp -g
+            sudo npm install -y gulp-cli -g
         fi
 
         breakLine
@@ -246,6 +256,12 @@ cNodeJs() {
         title "AngularJS Framework"
         if [ "$(askUser "Install the Angular CLI, Service Worker & PWA tools framework")" -eq 1 ]; then
             sudo npm install -y @angular/cli @angular/service-worker ng-pwa-tools -g
+        fi
+        
+        breakLine
+        title "ESLint"
+        if ["$(askUser "Install ESLint?")" -eq 1 ]; then
+            sudo npm install -y eslint -g
         fi
     fi
     breakLine
@@ -465,6 +481,16 @@ cSkype () {
     breakLine
 }
 
+cDiscord() {
+    title "Discord Desktop Client"
+    if [ "$(askUser "Install Discord Desktop Client")" -eq 1 ]; then
+        cd /tmp
+        wget -O discord.deb https://discordapp.com/api/download?platform=linux&format=deb
+        sudo dpkg --install discord.deb
+        sudo rm discord.deb
+    fi
+}
+
 cPopcornTime() {
     title "Popcorn Time (because why not? :p)"
     if [ "$(askUser "Install Popcorn Time (you deserve it)")" -eq 1 ]; then
@@ -528,6 +554,7 @@ configure() {
     fi
 
     # Systems setup
+    cAtom
     cPhp
     cNodeJs
     cGit
@@ -542,6 +569,7 @@ configure() {
     cFacebookMessenger
     cPopcornTime
     cLocalesPlusKeymap
+    cDiscord
     cClean
     exit
 }
