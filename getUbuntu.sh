@@ -13,7 +13,7 @@ ROBO_MONGO_PATH=/usr/local/bin/robomongo
 BOOTSTRAP_PATH=`dirname $0`/xenial.tar.bz2
 DOWNLOADS_PATH=/home/chronos/user/Downloads
 CHROOT_PATH=/mnt/stateful_partition/crouton/chroots/xenial
-TARGETS=cli-extra,xorg,xiwi,extension,keyboard,audio,chrome,gnome
+TARGETS=xorg,xiwi,cli-extra,extension,keyboard,audio,chrome,gnome
 
 
 ###############################################################
@@ -602,3 +602,6 @@ if [ ${INODE_NUM} -eq 2 ];
         fi
     else configure
 fi
+
+CLEAR="\033]0m"
+BOLD="\033]1m"
