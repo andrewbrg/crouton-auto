@@ -489,6 +489,14 @@ cDiscord() {
         sudo dpkg --install discord.deb
         sudo rm discord.deb
     fi
+    breakLine
+}
+
+cSSH() {
+    title "SSH Daemon"
+    if ["$(askUser "Install SSH?")" -eq 0]; then
+        sudo apt-get install ssh
+    fi
 }
 
 cPopcornTime() {
@@ -558,6 +566,7 @@ configure() {
     cPhp
     cNodeJs
     cGit
+    cSSH
     cDocker
     cMySqlWorkbench
     cMongoDb
@@ -566,10 +575,10 @@ configure() {
     cPyCharmIde
     cBracketsIde
     cSlack
+    cDiscord
     cFacebookMessenger
     cPopcornTime
     cLocalesPlusKeymap
-    cDiscord
     cClean
     exit
 }
