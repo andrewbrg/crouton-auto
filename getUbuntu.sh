@@ -61,7 +61,7 @@ fetchCrouton() {
     fi
 }
 
-updateChroot() {
+updateCrouton() {
 
     # Move to the downloads folder, we'll work in here
     cd ${DOWNLOADS_PATH}
@@ -588,20 +588,42 @@ configure() {
 ## Main application
 ###############################################################
 clear
-if [ ${INODE_NUM} -eq 2 ];
-    then
-        if [ $# -eq 0 ];
-            then
-            install
-        else while getopts :u option
-            do
-                case "${option}" in
-                u) updateChroot;;
-                esac
-            done
-        fi
-    else configure
-fi
+#if [ ${INODE_NUM} -eq 2 ];
+ #   then
+  #      if [ $# -eq 0 ];
+ #           then
+ #           install
+ #       else while getopts :u option
+ #           do
+ #               case "${option}" in
+  #              u) updateChroot;;
+  #              esac
+  #          done
+ #       fi
+#    else configure
+#fi
 
-CLEAR="\033]0m"
+ENDCLR="\033]0m"
 BOLD="\033]1m"
+PINK="\033]95m"
+CYAN="\033]36m"
+BLUE="\033]94m"
+title "${BOLD}${PINK}MENU${ENDCLR}"
+printf "${CYAN}${BOLD}(0)${ENDCLR} ${BLUE}Install and setup Ubuntu 16.04${ENDCLR}"
+printf "${CYAN}${BOLD}(1)${ENDCLR} ${BLUE}Update Ubuntu release (e.g. from 16.04 to 18.04)${ENDCLR}"
+printf "${CYAN}${BOLD}(2)${ENDCLR} ${BLUE}Update crouton installer (Do after updating Chrome OS)${ENDCLR}"
+printf "${CYAN}${BOLD}(3)${ENDCLR} ${BLUE}Quit${ENDCLR}"
+REPLY=""
+while [[ "$REPLY" != "0" && "$REPLY" != "1" && "$REPLY" != "2" && "$REPLY" != "3"  ]]
+do
+    read -p "Select an option:"
+    if [[ "$REPLY" -eq 0]]; then
+        install
+        configure
+    elif [[ "$REPLY" -eq 1]]; then
+        sudo enter-chroot -n xenial
+        sudo apt-get install update-manager-core python-apt
+        sudo do-release-upgrade
+        updateCrouton
+    fi
+done
