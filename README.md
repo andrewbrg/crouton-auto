@@ -39,7 +39,7 @@ After placing your Chromebook into developer mode, launch a crosh terminal by hi
 shell  
 sudo sh ~/Downloads/getUbuntu.sh
 ```
-
+This will open a menu where you can install, backup, or update your chroot.
 After the installation is complete you can launch Ubuntu by opening a crosh terminal `CTRL+ALT+T` and executing:
 
 ```shell
@@ -54,19 +54,12 @@ shell
 sudo startgnome -b
 ```
 
-Once in Ubuntu i'd recommend loading up the Gnome Tweak Tool _(which has been pre-installed by this script)_ and selecting the `global dark theme` and the `numix-circle` icons. Also go ahead and enable the `Pomodoro`, `Dash to dock` and any other UI shell extensions within the Gnome Tweak Tool as desired.
+Once in Ubuntu i'd recommend loading up the Gnome Tweak Tool _(which has been pre-installed by this script)_ and selecting the `global dark theme` and the `numix-circle` icons, as well as the `paper` icon theme.. Also go ahead and enable the `Pomodoro`, `Dash to dock` and any other UI shell extensions within the Gnome Tweak Tool as desired.
 
 To switch between operating systems hit `CTRL+ALT+SHIFT+FORWARD` or `CTRL+ALT+SHIFT+BACKWARDS`.
 
 It's important to logout from Ubuntu once before powering down your system to avoid potential corruption to the mounted root.
 
 ## Updating your chroot
-
-**I've updated ChromeOS and Ubuntu is acting up**
-
-If you want to run a full update of the Ubuntu installation in your chroot or you've updated ChromeOS and Ubuntu is not working properly anymore then run the following from crosh
-
-```shell
-shell
-sudo sh ~/Downloads/getUbuntu.sh -u
-```
+Run the script and select "Update Ubuntu" to update between Ubuntu versions (e.g. 16.04 to (when it comes out)18.04)
+Select "update crouton" if your chroot is acting up (generally this happens after Chrome OS update)

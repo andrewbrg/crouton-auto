@@ -13,7 +13,7 @@ ROBO_MONGO_PATH=/usr/local/bin/robomongo
 BOOTSTRAP_PATH=`dirname $0`/xenial.tar.bz2
 DOWNLOADS_PATH=/home/chronos/user/Downloads
 CHROOT_PATH=/mnt/stateful_partition/crouton/chroots/xenial
-TARGETS=cli-extra,xorg,xiwi,extension,keyboard,audio,chrome,gnome
+TARGETS=xorg,xiwi,cli-extra,extension,keyboard,audio,chrome,gnome
 
 
 ###############################################################
@@ -61,7 +61,7 @@ fetchCrouton() {
     fi
 }
 
-updateChroot() {
+updateCrouton() {
 
     # Move to the downloads folder, we'll work in here
     cd ${DOWNLOADS_PATH}
@@ -122,7 +122,6 @@ cRepositories() {
     sudo add-apt-repository -y ppa:numix/ppa
     sudo add-apt-repository -y ppa:gnome3-team/gnome3-staging
     sudo add-apt-repository -y ppa:gnome3-team/gnome3
-    sudo add-apt-repository -y ppa:webupd8team/atom
 
     sudo apt install -y curl apt-transport-https ca-certificates
 
@@ -143,7 +142,7 @@ cRepositories() {
 cUi() {
     title "Preparing the Gnome interface / applications"
     sudo apt dist-upgrade -y
-    sudo apt install -y numix-icon-theme-circle whoopsie language-pack-en-base nano mlocate htop preload inxi filezilla vlc bleachbit putty vim fish kiki atom xarchiver p7zip p7zip-rar
+    sudo apt install -y numix-icon-theme-circle whoopsie language-pack-en-base nano mlocate htop preload inxi filezilla vlc bleachbit putty vim fish kiki xarchiver p7zip p7zip-rar
     sudo apt install -y gnome-tweak-tool gnome-terminal gnome-control-center gnome-online-accounts gnome-software gnome-software-common
     sudo apt install -y gnome-shell chrome-gnome-shell
     sudo apt install -y gnome-shell-extensions gnome-shell-extension-dashtodock gnome-shell-pomodoro gnome-shell-extension-taskbar gnome-shell-extensions-gpaste
@@ -174,6 +173,16 @@ cUi() {
     breakLine
 }
 
+cAtom() {
+    title "Atom IDE"
+    if ["$(askUser "Install Atom")" -eq 0]; then
+        cd /tmp
+        wget "https://github.com/atom/atom/releases/download/v1.23.3/atom-amd64.deb" -O atom.deb
+        sudo dpkg -i atom.deb
+        sudo rm atom.deb
+    fi
+}
+
 cPhp() {
     title "PHP v7.0"
     if [ "$(askUser "Install PHP v7.0")" -eq 1 ]; then
@@ -196,10 +205,11 @@ cPhp() {
 
 cNodeJs() {
     title "NodeJS"
-    if [ "$(askUser "Install NodeJS v6.0 environment")" -eq 1 ]; then
-        curl -sL "https://deb.nodesource.com/setup_6.x" | sudo -E bash -
+    if [ "$(askUser "Install NodeJS environment version 8?")" -eq 1 ]; then
+        curl -sL "https://deb.nodesource.com/setup_8.x" | sudo -E bash -
         sudo apt install -y build-essential nodejs
-
+        npm i -g npm
+        
         breakLine
         title "Bower"
         if [ "$(askUser "Install Bower package manager")" -eq 1 ]; then
@@ -209,7 +219,7 @@ cNodeJs() {
         breakLine
         title "Gulp"
         if [ "$(askUser "Install Gulp pre-compiler")" -eq 1 ]; then
-            sudo npm install -y gulp -g
+            sudo npm install -y gulp-cli -g
         fi
 
         breakLine
@@ -246,6 +256,12 @@ cNodeJs() {
         title "AngularJS Framework"
         if [ "$(askUser "Install the Angular CLI, Service Worker & PWA tools framework")" -eq 1 ]; then
             sudo npm install -y @angular/cli @angular/service-worker ng-pwa-tools -g
+        fi
+        
+        breakLine
+        title "ESLint"
+        if ["$(askUser "Install ESLint?")" -eq 1 ]; then
+            sudo npm install -y eslint -g
         fi
     fi
     breakLine
@@ -465,6 +481,24 @@ cSkype () {
     breakLine
 }
 
+cDiscord() {
+    title "Discord Desktop Client"
+    if [ "$(askUser "Install Discord Desktop Client")" -eq 1 ]; then
+        cd /tmp
+        wget -O discord.deb https://discordapp.com/api/download?platform=linux&format=deb
+        sudo dpkg --install discord.deb
+        sudo rm discord.deb
+    fi
+    breakLine
+}
+
+cSSH() {
+    title "SSH Daemon"
+    if ["$(askUser "Install SSH?")" -eq 0]; then
+        sudo apt-get install ssh
+    fi
+}
+
 cPopcornTime() {
     title "Popcorn Time (because why not? :p)"
     if [ "$(askUser "Install Popcorn Time (you deserve it)")" -eq 1 ]; then
@@ -528,9 +562,11 @@ configure() {
     fi
 
     # Systems setup
+    cAtom
     cPhp
     cNodeJs
     cGit
+    cSSH
     cDocker
     cMySqlWorkbench
     cMongoDb
@@ -539,6 +575,7 @@ configure() {
     cPyCharmIde
     cBracketsIde
     cSlack
+    cDiscord
     cFacebookMessenger
     cPopcornTime
     cLocalesPlusKeymap
@@ -551,17 +588,62 @@ configure() {
 ## Main application
 ###############################################################
 clear
-if [ ${INODE_NUM} -eq 2 ];
-    then
-        if [ $# -eq 0 ];
-            then
+#if [ ${INODE_NUM} -eq 2 ];
+ #   then
+  #      if [ $# -eq 0 ];
+ #           then
+ #           install
+ #       else while getopts :u option
+ #           do
+ #               case "${option}" in
+  #              u) updateChroot;;
+  #              esac
+  #          done
+ #       fi
+#    else configure
+#fi
+
+ENDCLR="\033]0m"
+BOLD="\033]1m"
+PINK="\033]95m"
+CYAN="\033]36m"
+BLUE="\033]94m"
+title "${BOLD}${BLUE}MENU${ENDCLR}"
+printf "${CYAN}${BOLD}(0)${ENDCLR} ${PINK}Install and setup Ubuntu 16.04${ENDCLR}"
+printf "${CYAN}${BOLD}(1)${ENDCLR} ${PINK}Update Ubuntu release (e.g. from 16.04 to 18.04)${ENDCLR}"
+printf "${CYAN}${BOLD}(2)${ENDCLR} ${PINK}Update crouton installer (Do after updating Chrome OS)${ENDCLR}"
+printf "${CYAN}${BOLD}(3)${ENDCLR} ${PINK}Backup Ubuntu to your home directory${ENDCLR}"
+printf "${CYAN}${BOLD}(4)${ENDCLR} ${PINK}Restore Ubuntu from backup${ENDCLR}"
+printf "${CYAN}${BOLD}(5)${ENDCLR} ${PINK}Quit${ENDCLR}"
+REPLY=""
+while [[ "$REPLY" != "0" && "$REPLY" != "1" && "$REPLY" != "2" && "$REPLY" != "3" && "$REPLY" != "4" && "$REPLY" != "5"]]
+do
+    read -p "Select an option:"
+    case $REPLY in:
+        0) 
             install
-        else while getopts :u option
-            do
-                case "${option}" in
-                u) updateChroot;;
-                esac
-            done
-        fi
-    else configure
-fi
+            configure
+            ;;
+        1) 
+            sudo enter-chroot -n xenial
+            sudo apt-get install update-manager-core python-apt
+            sudo do-release-upgrade
+            exit
+            updateCrouton
+            ;;
+        2)
+            updateCrouton
+            ;;
+        3)
+            cd
+            sudo edit-chroot -b xenial
+            ;;
+        4)
+            cd 
+            sudo edit-chroot -r xenial
+            ;;
+        5)
+            exit 0
+            ;;
+    esac        
+done
