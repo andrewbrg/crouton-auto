@@ -608,13 +608,15 @@ BOLD="\033]1m"
 PINK="\033]95m"
 CYAN="\033]36m"
 BLUE="\033]94m"
-title "${BOLD}${PINK}MENU${ENDCLR}"
-printf "${CYAN}${BOLD}(0)${ENDCLR} ${BLUE}Install and setup Ubuntu 16.04${ENDCLR}"
-printf "${CYAN}${BOLD}(1)${ENDCLR} ${BLUE}Update Ubuntu release (e.g. from 16.04 to 18.04)${ENDCLR}"
-printf "${CYAN}${BOLD}(2)${ENDCLR} ${BLUE}Update crouton installer (Do after updating Chrome OS)${ENDCLR}"
-printf "${CYAN}${BOLD}(3)${ENDCLR} ${BLUE}Quit${ENDCLR}"
+title "${BOLD}${BLUE}MENU${ENDCLR}"
+printf "${CYAN}${BOLD}(0)${ENDCLR} ${PINK}Install and setup Ubuntu 16.04${ENDCLR}"
+printf "${CYAN}${BOLD}(1)${ENDCLR} ${PINK}Update Ubuntu release (e.g. from 16.04 to 18.04)${ENDCLR}"
+printf "${CYAN}${BOLD}(2)${ENDCLR} ${PINK}Update crouton installer (Do after updating Chrome OS)${ENDCLR}"
+printf "${CYAN}${BOLD}(3)${ENDCLR} ${PINK}Backup Ubuntu to your home directory${ENDCLR}"
+printf "${CYAN}${BOLD}(4)${ENDCLR} ${PINK}Restore Ubuntu from backup${ENDCLR}"
+printf "${CYAN}${BOLD}(5)${ENDCLR} ${PINK}Quit${ENDCLR}"
 REPLY=""
-while [[ "$REPLY" != "0" && "$REPLY" != "1" && "$REPLY" != "2" && "$REPLY" != "3"  ]]
+while [[ "$REPLY" != "0" && "$REPLY" != "1" && "$REPLY" != "2" && "$REPLY" != "3" && "$REPLY" != "4" && "$REPLY" != "5"]]
 do
     read -p "Select an option:"
     if [[ "$REPLY" -eq 0]]; then
@@ -624,6 +626,8 @@ do
         sudo enter-chroot -n xenial
         sudo apt-get install update-manager-core python-apt
         sudo do-release-upgrade
+        exit
         updateCrouton
+    elif [["$REPLY" -eq 2]]; then
     fi
 done
