@@ -619,15 +619,31 @@ REPLY=""
 while [[ "$REPLY" != "0" && "$REPLY" != "1" && "$REPLY" != "2" && "$REPLY" != "3" && "$REPLY" != "4" && "$REPLY" != "5"]]
 do
     read -p "Select an option:"
-    if [[ "$REPLY" -eq 0]]; then
-        install
-        configure
-    elif [[ "$REPLY" -eq 1]]; then
-        sudo enter-chroot -n xenial
-        sudo apt-get install update-manager-core python-apt
-        sudo do-release-upgrade
-        exit
-        updateCrouton
-    elif [["$REPLY" -eq 2]]; then
-    fi
+    case $REPLY in:
+        0) 
+            install
+            configure
+            ;;
+        1) 
+            sudo enter-chroot -n xenial
+            sudo apt-get install update-manager-core python-apt
+            sudo do-release-upgrade
+            exit
+            updateCrouton
+            ;;
+        2)
+            updateCrouton
+            ;;
+        3)
+            cd
+            sudo edit-chroot -b xenial
+            ;;
+        4)
+            cd 
+            sudo edit-chroot -r xenial
+            ;;
+        5)
+            exit 0
+            ;;
+    esac        
 done
