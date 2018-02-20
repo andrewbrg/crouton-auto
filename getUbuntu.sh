@@ -188,7 +188,7 @@ cPhp() {
         breakLine
         title "Swoole"
         if [ "$(askUser "Install Swoole asynchronous PHP framework")" -eq 1 ]; then
-            sudo pecl install -y swoole
+            sudo pecl install swoole -y
         fi
     fi
     breakLine
