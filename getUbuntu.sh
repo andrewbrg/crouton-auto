@@ -162,22 +162,20 @@ cUi() {
     wget "https://github.com/oguzhaninan/Stacer/releases/download/v1.0.8/Stacer_1.0.8_amd64.deb" -O stacer.deb
     sudo dpkg -i stacer.deb
     sudo rm stacer.deb
+    
+    sudo chown -R 1000:1000 "$HOME"
 
     if [ -f /usr/share/applications/kiki.desktop ]; then
         sudo sed -i "s/Icon=.*/Icon=regexxer/g" /usr/share/applications/kiki.desktop
     fi
 
     breakLine
-
-    title "Installing ClamAV"
-    sudo apt install -y clamav clamav-daemon clamav-freshclam clamtk
-    breakLine
 }
 
 cPhp() {
-    title "PHP v7.0"
-    if [ "$(askUser "Install PHP v7.0")" -eq 1 ]; then
-        sudo apt install -y php7.0 php7.0-fpm php7.0-cli php7.0-common php7.0-mbstring php7.0-gd php7.0-intl php7.0-xml php7.0-mysql php7.0-mcrypt php7.0-zip php7.0-dev php-pear
+    title "PHP v7.2"
+    if [ "$(askUser "Install PHP v7.2")" -eq 1 ]; then
+        sudo apt install -y php7.2 php7.2-fpm php7.2-cli php7.2-common php7.2-mbstring php7.2-gd php7.2-intl php7.2-xml php7.2-mysql php7.2-mcrypt php7.2-zip php7.2-dev php-pear
 
         breakLine
         title "Composer"
@@ -196,8 +194,8 @@ cPhp() {
 
 cNodeJs() {
     title "NodeJS"
-    if [ "$(askUser "Install NodeJS v6.0 environment")" -eq 1 ]; then
-        curl -sL "https://deb.nodesource.com/setup_6.x" | sudo -E bash -
+    if [ "$(askUser "Install NodeJS v9.0 environment")" -eq 1 ]; then
+        curl -sL "https://deb.nodesource.com/setup_9.x" | sudo -E bash -
         sudo apt install -y build-essential nodejs
 
         breakLine
@@ -238,7 +236,7 @@ cNodeJs() {
 
         breakLine
         title "React Library"
-        if [ "$(askUser "Install the React/React Native SDKs")" -eq 1 ]; then
+        if [ "$(askUser "Install the React/Native SDKs")" -eq 1 ]; then
             sudo npm install -y create-react-app create-react-native-app -g
         fi
 
@@ -331,7 +329,7 @@ cPhpStormIde() {
     title "PHP Storm (30 Day Trial) IDE"
     if [ "$(askUser "Install PHP Storm (30 Day Trial) IDE")" -eq 1 ]; then
         cd /tmp
-        wget "https://download.jetbrains.com/webide/PhpStorm-2017.2.4.tar.gz" -O phpstorm.tar.gz
+        wget "https://download.jetbrains.com/webide/PhpStorm-2017.3.4.tar.gz" -O phpstorm.tar.gz
         sudo tar xf phpstorm.tar.gz
 
         if [ -d ${PHPSTORM_PATH} ]; then
@@ -397,22 +395,6 @@ cPyCharmIde() {
         sudo echo "Comment=The Drive to Develop" >> ${PYCHARM_LAUNCHER_PATH}
         sudo echo "Categories=Development;IDE;" >> ${PYCHARM_LAUNCHER_PATH}
         sudo echo "Terminal=false" >> ${PYCHARM_LAUNCHER_PATH}
-    fi
-    breakLine
-}
-
-cBracketsIde() {
-    title "Brackets IDE"
-    if [ "$(askUser "Install Adobe Brackets IDE")" -eq 1 ]; then
-        cd /tmp
-        sudo apt install -y libpangox-1.0-0 libpango1.0-0
-
-        if [ -d /opt/brackets/ ]; then
-            sudo rm -rf /opt/brackets/
-        fi
-        wget "https://github.com/adobe/brackets/releases/download/release-1.11/Brackets.Release.1.11.64-bit.deb" -O brackets.deb
-        sudo dpkg -i brackets.deb
-        sudo rm brackets.deb
     fi
     breakLine
 }
@@ -498,6 +480,8 @@ cPopcornTime() {
 
 cLocalesPlusKeymap() {
     title "Configuring locales and keyboard mappings"
+    sudo locale-gen en_US.UTF-8 
+    sudo locale-gen en_GB.UTF-8
     sudo echo "LANG=en_US.UTF-8" >> /etc/default/locale
     sudo echo "LANGUAGE=en_US.UTF-8" >> /etc/default/locale
     sudo echo "LC_ALL=en_US.UTF-8" >> /etc/default/locale
@@ -537,7 +521,6 @@ configure() {
     cVsCodeIde
     cPhpStormIde
     cPyCharmIde
-    cBracketsIde
     cSlack
     cFacebookMessenger
     cPopcornTime
