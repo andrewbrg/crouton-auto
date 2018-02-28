@@ -120,6 +120,7 @@ cPreRequisites() {
 cRepositories() {
     title "Setting up required Ubuntu 16.04 repositories"
     sudo add-apt-repository -y ppa:numix/ppa
+    sudo add-apt-repository -y ppa:ondrej/php 
     sudo add-apt-repository -y ppa:gnome3-team/gnome3-staging
     sudo add-apt-repository -y ppa:gnome3-team/gnome3
     sudo add-apt-repository -y ppa:webupd8team/atom
@@ -159,7 +160,7 @@ cUi() {
     sudo rm insomnia.deb
 
     cd /tmp
-    wget "https://github.com/oguzhaninan/Stacer/releases/download/v1.0.8/Stacer_1.0.8_amd64.deb" -O stacer.deb
+    wget "https://github.com/oguzhaninan/Stacer/releases/download/v1.0.8/Stacer_x64_v1.0.8.deb" -O stacer.deb
     sudo dpkg -i stacer.deb
     sudo rm stacer.deb
     
@@ -176,7 +177,8 @@ cPhp() {
     title "PHP v7.2"
     if [ "$(askUser "Install PHP v7.2")" -eq 1 ]; then
         sudo apt install -y php7.2 php7.2-fpm php7.2-cli php7.2-common php7.2-mbstring php7.2-gd php7.2-intl php7.2-xml php7.2-mysql php7.2-mcrypt php7.2-zip php7.2-dev php-pear
-
+        php -v 
+        
         breakLine
         title "Composer"
         if [ "$(askUser "Install Composer package manager for PHP")" -eq 1 ]; then
