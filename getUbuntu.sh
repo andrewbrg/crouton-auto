@@ -176,6 +176,8 @@ cUi() {
 cPhp() {
     title "PHP v7.2"
     if [ "$(askUser "Install PHP v7.2")" -eq 1 ]; then
+        sudo add-apt-repository -y ppa:ondrej/php
+        sudo apt update -y
         sudo apt install -y --allow-unauthenticated php7.2 php7.2-fpm php7.2-cli php7.2-common php7.2-mbstring php7.2-gd php7.2-intl php7.2-xml php7.2-mysql php7.2-zip php7.2-dev php-pear
         php -v
         
