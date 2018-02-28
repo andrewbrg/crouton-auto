@@ -113,7 +113,7 @@ install() {
 ###############################################################
 cPreRequisites() {
     title "Installing package pre-requisites"
-    sudo apt install -y locales software-properties-common python-software-properties
+    sudo apt install -y software-properties-common python-software-properties
     breakLine
 }
 
@@ -176,8 +176,8 @@ cUi() {
 cPhp() {
     title "PHP v7.2"
     if [ "$(askUser "Install PHP v7.2")" -eq 1 ]; then
-        sudo apt install -y php7.2 php7.2-fpm php7.2-cli php7.2-common php7.2-mbstring php7.2-gd php7.2-intl php7.2-xml php7.2-mysql php7.2-mcrypt php7.2-zip php7.2-dev php-pear
-        php -v 
+        sudo apt install -y --allow-unauthenticated php7.2 php7.2-fpm php7.2-cli php7.2-common php7.2-mbstring php7.2-gd php7.2-intl php7.2-xml php7.2-mysql php7.2-zip php7.2-dev php-pear
+        php -v
         
         breakLine
         title "Composer"
