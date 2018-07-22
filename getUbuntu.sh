@@ -13,7 +13,7 @@ ROBO_MONGO_PATH=/usr/local/bin/robomongo
 BOOTSTRAP_PATH=`dirname $0`/xenial.tar.bz2
 DOWNLOADS_PATH=/home/chronos/user/Downloads
 CHROOT_PATH=/mnt/stateful_partition/crouton/chroots/xenial
-TARGETS=cli-extra,xorg,xiwi,extension,keyboard,audio,chrome,gnome
+TARGETS=cli-extra,xorg,xiwi,extension,keyboard,audio,chrome,kde
 
 
 ###############################################################
@@ -92,7 +92,7 @@ install() {
         fi
 
         # Setup Ubuntu
-        title "Ubuntu 16.04 with Gnome on ChromeOS"
+        title "Ubuntu 16.04 with KDE on ChromeOS"
         if [ "$(askUser "Install Ubuntu 16.04 LTS (xenial)")" -eq 1 ]; then
             sudo sh ${CROUTON_PATH} -f ${BOOTSTRAP_PATH} -t ${TARGETS}
         fi
@@ -120,10 +120,8 @@ cPreRequisites() {
 cRepositories() {
     title "Setting up required Ubuntu 16.04 repositories"
     sudo add-apt-repository -y ppa:numix/ppa
-    sudo add-apt-repository -y ppa:gnome3-team/gnome3-staging
-    sudo add-apt-repository -y ppa:gnome3-team/gnome3
     sudo add-apt-repository -y ppa:webupd8team/atom
-
+    sudo add-apt-repository -y ppa:kubuntu-ppa/backports
     sudo apt install -y curl apt-transport-https ca-certificates
 
     sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6
@@ -141,22 +139,10 @@ cRepositories() {
 }
 
 cUi() {
-    title "Preparing the Gnome interface / applications"
+    title "Preparing the interface / applications"
     sudo apt dist-upgrade -y
+    sudo apt-get install kubuntu-desktop -y
     sudo apt install -y numix-icon-theme-circle whoopsie language-pack-en-base nano mlocate htop preload inxi filezilla vlc bleachbit putty vim fish kiki atom xarchiver p7zip p7zip-rar
-    sudo apt install -y gnome-tweak-tool gnome-terminal gnome-control-center gnome-online-accounts gnome-software gnome-software-common
-    sudo apt install -y gnome-shell chrome-gnome-shell
-    sudo apt install -y gnome-shell-extensions gnome-shell-extension-dashtodock gnome-shell-pomodoro gnome-shell-extension-taskbar gnome-shell-extensions-gpaste
-
-    cd /tmp
-    wget "http://launchpadlibrarian.net/228111194/gnome-disk-utility_3.18.3.1-1ubuntu1_amd64.deb" -O gnome-disk.deb
-    sudo dpkg -i gnome-disk.deb
-    sudo rm gnome-disk.deb
-
-    cd /tmp
-    wget "https://builds.insomnia.rest/downloads/ubuntu/latest" -O insomnia.deb
-    sudo dpkg -i insomnia.deb
-    sudo rm insomnia.deb
 
     cd /tmp
     wget "https://github.com/oguzhaninan/Stacer/releases/download/v1.0.8/Stacer_x64_v1.0.8.deb" -O stacer.deb
@@ -400,32 +386,6 @@ cPyCharmIde() {
     breakLine
 }
 
-
-cSlack() {
-    title "Slack"
-    if [ "$(askUser "Install Slack chat")" -eq 1 ]; then
-        sudo apt install -y slack-desktop gvfs-bin gir1.2-gnomekeyring-1.0
-        local SLACK_LAUNCHER_PATH=/usr/share/applications/slack.desktop
-
-        if [ ! -f ${SLACK_LAUNCHER_PATH} ]; then
-            sudo touch ${SLACK_LAUNCHER_PATH}
-        fi
-
-        sudo truncate --size 0 ${SLACK_LAUNCHER_PATH}
-        sudo echo "[Desktop Entry]" >> ${SLACK_LAUNCHER_PATH}
-        sudo echo "Name=Slack" >> ${SLACK_LAUNCHER_PATH}
-        sudo echo "Comment=Slack Desktop" >> ${SLACK_LAUNCHER_PATH}
-        sudo echo "GenericName=Slack Client for Linux" >> ${SLACK_LAUNCHER_PATH}
-        sudo echo "Exec=/usr/bin/slack --disable-gpu %U" >> ${SLACK_LAUNCHER_PATH}
-        sudo echo "Icon=slack" >> ${SLACK_LAUNCHER_PATH}
-        sudo echo "Type=Application" >> ${SLACK_LAUNCHER_PATH}
-        sudo echo "StartupNotify=true" >> ${SLACK_LAUNCHER_PATH}
-        sudo echo "Categories=GNOME;GTK;Network;InstantMessaging;" >> ${SLACK_LAUNCHER_PATH}
-        sudo echo "MimeType=x-scheme-handler/slack;" >> ${SLACK_LAUNCHER_PATH}
-    fi
-    breakLine
-}
-
 cFacebookMessenger() {
     title "Facebook Messenger"
     if [ "$(askUser "Install Facebook Messenger")" -eq 1 ]; then
@@ -522,7 +482,6 @@ configure() {
     cVsCodeIde
     cPhpStormIde
     cPyCharmIde
-    cSlack
     cFacebookMessenger
     cPopcornTime
     cLocalesPlusKeymap
