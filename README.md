@@ -1,10 +1,6 @@
 
 # Linux 16.04 (Xenial) dual OS on ChromeOS via Crouton
-   
-   
-![3fa4bf29a8d83625909b76abb99537e9.jpg](http://pichoster.net/images/2017/10/03/3fa4bf29a8d83625909b76abb99537e9.jpg)
-   
-   
+
 Download latest version here: [https://goo.gl/EYStRG](https://goo.gl/EYStRG) _(open->right click->save as)_
 
 This is a handy script to automatically set up an Ubuntu dev machine on your chromebook. The Ubuntu will be installed in a chroot along with your current Chrome operating system _(you can run two operating systems in parallel)_. The Crouton project is developed/maintained by David Schneider @ https://github.com/dnschneid  
@@ -44,17 +40,15 @@ After the installation is complete you can launch Ubuntu by opening a crosh term
 
 ```shell
 shell  
-sudo startgnome
+sudo startkde
 ```
 
 If you want to be able to close the crosh terminal without Ubuntu un-mounting itself as a consequence use the following:
 
 ```shell
 shell
-sudo startgnome -b
+sudo startkde -b
 ```
-
-Once in Ubuntu i'd recommend loading up the Gnome Tweak Tool _(which has been pre-installed by this script)_ and selecting the `global dark theme` and the `numix-circle` icons. Also go ahead and enable the `Pomodoro`, `Dash to dock` and any other UI shell extensions within the Gnome Tweak Tool as desired.
 
 To switch between operating systems hit `CTRL+ALT+SHIFT+FORWARD` or `CTRL+ALT+SHIFT+BACKWARDS`.
 
