@@ -47,7 +47,7 @@ If you want to be able to close the crosh terminal without Ubuntu un-mounting it
 
 ```shell
 shell
-sudo startkde -b
+sudo startxfce -b
 ```
 
 To switch between operating systems hit `CTRL+ALT+SHIFT+FORWARD` or `CTRL+ALT+SHIFT+BACKWARDS`.
