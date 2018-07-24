@@ -92,7 +92,7 @@ install() {
         fi
 
         # Setup Ubuntu
-        title "Ubuntu 16.04 with KDE on ChromeOS"
+        title "Ubuntu 16.04 with XFCE on ChromeOS"
         if [ "$(askUser "Install Ubuntu 16.04 LTS (xenial)")" -eq 1 ]; then
             sudo sh ${CROUTON_PATH} -f ${BOOTSTRAP_PATH} -t ${TARGETS}
         fi
