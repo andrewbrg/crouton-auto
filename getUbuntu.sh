@@ -13,7 +13,7 @@ ROBO_MONGO_PATH=/usr/local/bin/robomongo
 BOOTSTRAP_PATH=`dirname $0`/xenial.tar.bz2
 DOWNLOADS_PATH=/home/chronos/user/Downloads
 CHROOT_PATH=/mnt/stateful_partition/crouton/chroots/xenial
-TARGETS=cli-extra,xorg,xiwi,extension,keyboard,audio,chrome,kde
+TARGETS=cli-extra,xorg,xiwi,extension,keyboard,audio,chrome,xfce
 
 
 ###############################################################
@@ -121,7 +121,9 @@ cRepositories() {
     title "Setting up required Ubuntu 16.04 repositories"
     sudo add-apt-repository -y ppa:numix/ppa
     sudo add-apt-repository -y ppa:webupd8team/atom
-    sudo add-apt-repository -y ppa:kubuntu-ppa/backports
+    sudo add-apt-repository -y ppa:moka/daily
+    sudo add-apt-repository -y ppa:docky-core/ppa
+    sudo add-apt-repository -y ppa:gottcode/gcppa
     sudo apt install -y curl apt-transport-https ca-certificates
 
     sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6
@@ -141,9 +143,17 @@ cRepositories() {
 cUi() {
     title "Preparing the interface / applications"
     sudo apt dist-upgrade -y
-    sudo apt-get install kubuntu-desktop -y
-    sudo apt install -y numix-icon-theme-circle whoopsie language-pack-en-base nano mlocate htop preload inxi filezilla vlc bleachbit putty vim fish kiki atom xarchiver p7zip p7zip-rar
+    sudo apt install -y  whoopsie language-pack-en-base nano mlocate htop preload inxi filezilla vlc bleachbit putty vim fish kiki atom xarchiver p7zip p7zip-rar
 
+    sudo apt install -y software-center
+    sudo apt install -y numix-icon-theme-circle moka-icon-theme
+
+    # Docky -
+    sudo apt install -y docky
+
+    # Whisker Menu -
+    sudo apt install -y xfce4-whiskermenu-plugin
+    
     cd /tmp
     wget "https://github.com/oguzhaninan/Stacer/releases/download/v1.0.8/Stacer_x64_v1.0.8.deb" -O stacer.deb
     sudo dpkg -i stacer.deb
