@@ -40,7 +40,7 @@ After the installation is complete you can launch Ubuntu by opening a crosh term
 
 ```shell
 shell  
-sudo startkde
+sudo startxfce
 ```
 
 If you want to be able to close the crosh terminal without Ubuntu un-mounting itself as a consequence use the following:
