@@ -40,14 +40,14 @@ After the installation is complete you can launch Ubuntu by opening a crosh term
 
 ```shell
 shell  
-sudo startxfce
+sudo startxfce4
 ```
 
 If you want to be able to close the crosh terminal without Ubuntu un-mounting itself as a consequence use the following:
 
 ```shell
 shell
-sudo startxfce -b
+sudo startxfce4 -b
 ```
 
 To switch between operating systems hit `CTRL+ALT+SHIFT+FORWARD` or `CTRL+ALT+SHIFT+BACKWARDS`.
