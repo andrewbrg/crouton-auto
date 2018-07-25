@@ -10,9 +10,9 @@ PYCHARM_PATH=/usr/local/bin/pycharm
 PHPSTORM_PATH=/usr/local/bin/phpstorm
 INODE_NUM=`ls -id / | awk '{print $1}'`
 ROBO_MONGO_PATH=/usr/local/bin/robomongo
-BOOTSTRAP_PATH=`dirname $0`/xenial.tar.bz2
+BOOTSTRAP_PATH=`dirname $0`/bionic.tar.bz2
 DOWNLOADS_PATH=/home/chronos/user/Downloads
-CHROOT_PATH=/mnt/stateful_partition/crouton/chroots/xenial
+CHROOT_PATH=/mnt/stateful_partition/crouton/chroots/bionic
 TARGETS=cli-extra,xorg,xiwi,extension,keyboard,audio,chrome,xfce
 
 
@@ -70,7 +70,7 @@ updateChroot() {
     fetchCrouton
 
     title "Updating your chroot installation"
-    sudo sh ${CROUTON_PATH} -n xenial -u
+    sudo sh ${CROUTON_PATH} -n bionic -u
     breakLine
 }
 
@@ -86,25 +86,25 @@ install() {
     if [ ! -d ${CHROOT_PATH} ]; then
         # Prepare a bootstrap
         if [ ! -f ${BOOTSTRAP_PATH} ]; then
-            title "Preparing an Ubuntu bootstrap"
-            sudo sh ${CROUTON_PATH} -d -f ${BOOTSTRAP_PATH} -r xenial -t ${TARGETS}
+            title "Preparing an Ubuntu 18.04 bootstrap"
+            sudo sh ${CROUTON_PATH} -d -f ${BOOTSTRAP_PATH} -r bionic -t ${TARGETS}
             breakLine
         fi
 
         # Setup Ubuntu
-        title "Ubuntu 16.04 with XFCE on ChromeOS"
-        if [ "$(askUser "Install Ubuntu 16.04 LTS (xenial)")" -eq 1 ]; then
+        title "Install Ubuntu 18.04 on ChromeOS"
+        if [ "$(askUser "Install Ubuntu 18.04 LTS (bionic) with XFCE")" -eq 1 ]; then
             sudo sh ${CROUTON_PATH} -f ${BOOTSTRAP_PATH} -t ${TARGETS}
         fi
         breakLine
     fi
 
     # Launch Ubuntu & configure
-    title "Mounting the Ubuntu 16.04 chroot"
+    title "Mounting the chroot"
 
     # Get chroot username
     CHROOT_USERNAME=`ls ${CHROOT_PATH}/home/ | awk '{print $1}'`
-    sudo enter-chroot -n xenial -l sh /home/${CHROOT_USERNAME}/Downloads/${SELF_NAME}
+    sudo enter-chroot -n bionic -l sh /home/${CHROOT_USERNAME}/Downloads/${SELF_NAME}
     breakLine
 }
 
@@ -112,23 +112,20 @@ install() {
 ## Configuration
 ###############################################################
 cPreRequisites() {
-    title "Installing package pre-requisites"
+    title "Installing pre-requisites"
     sudo apt install -y software-properties-common python-software-properties
     breakLine
 }
 
 cRepositories() {
-    title "Setting up required Ubuntu 16.04 repositories"
+    title "Setting up required repositories"
     sudo add-apt-repository -y ppa:numix/ppa
     sudo add-apt-repository -y ppa:webupd8team/atom
     sudo add-apt-repository -y ppa:moka/daily
     sudo add-apt-repository -y ppa:docky-core/ppa
     sudo add-apt-repository -y ppa:gottcode/gcppa
     sudo apt install -y curl apt-transport-https ca-certificates
-
-    sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6
-    sudo echo "deb [arch=amd64,arm64] http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.4 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.4.list
-
+    
     curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
     sudo mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
     sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
@@ -141,37 +138,14 @@ cRepositories() {
 }
 
 cUi() {
-    title "Preparing the interface / applications"
+    title "Preparing the UI/Apps"
     sudo apt dist-upgrade -y
     sudo apt install -y whoopsie language-pack-en-base nano mlocate htop preload inxi filezilla vlc bleachbit putty vim fish kiki atom xarchiver p7zip p7zip-rar
 
-    sudo apt install -y software-center
     sudo apt install -y numix-icon-theme-circle moka-icon-theme
     sudo apt install -y docky
     sudo apt install -y xfce4-whiskermenu-plugin
     
-    local SOFTWARE_CENTER_LAUNCHER_PATH=/usr/share/applications/ubuntu-software-center.desktop
-
-    if [ ! -f ${SOFTWARE_CENTER_LAUNCHER_PATH} ]; then
-        sudo touch ${SOFTWARE_CENTER_LAUNCHER_PATH}
-    fi
-
-    sudo truncate --size 0 ${SOFTWARE_CENTER_LAUNCHER_PATH}
-    sudo echo "[Desktop Entry]" >> ${SOFTWARE_CENTER_LAUNCHER_PATH}
-    sudo echo "Name=Ubuntu Software Center" >> ${SOFTWARE_CENTER_LAUNCHER_PATH}
-    sudo echo "GenericName=Software Center" >> ${SOFTWARE_CENTER_LAUNCHER_PATH}
-    sudo echo "Comment=Lets you choose from thousands of applications available for Ubuntu" >> ${SOFTWARE_CENTER_LAUNCHER_PATH}
-    sudo echo "Exec=gksudo /usr/bin/software-center %u" >> ${SOFTWARE_CENTER_LAUNCHER_PATH}
-    sudo echo "Icon=softwarecenter" >> ${SOFTWARE_CENTER_LAUNCHER_PATH}
-    sudo echo "Terminal=false" >> ${SOFTWARE_CENTER_LAUNCHER_PATH}
-    sudo echo "Type=Application" >> ${SOFTWARE_CENTER_LAUNCHER_PATH}
-    sudo echo "Categories=PackageManager;GTK;System;Settings;" >> ${SOFTWARE_CENTER_LAUNCHER_PATH}
-    sudo echo "MimeType=application/x-deb;application/x-debian-package;x-scheme-handler/apt;" >> ${SOFTWARE_CENTER_LAUNCHER_PATH}
-    sudo echo "StartupNotify=true" >> ${SOFTWARE_CENTER_LAUNCHER_PATH}
-    sudo echo "X-Ubuntu-Gettext-Domain=software-center" >> ${SOFTWARE_CENTER_LAUNCHER_PATH}
-    sudo echo "X-Unity-IconBackgroundColor=#ffbf87" >> ${SOFTWARE_CENTER_LAUNCHER_PATH}
-    sudo echo "Keywords=Sources;PPA;Install;Uninstall;Remove;Purchase;Catalogue;Store;Apps;" >> ${SOFTWARE_CENTER_LAUNCHER_PATH}
-   
     cd /tmp
     wget "https://github.com/oguzhaninan/Stacer/releases/download/v1.0.8/Stacer_x64_v1.0.8.deb" -O stacer.deb
     sudo dpkg -i stacer.deb
@@ -187,20 +161,20 @@ cUi() {
 }
 
 cPhp() {
-    title "PHP v7.0"
-    if [ "$(askUser "Install PHP v7.0")" -eq 1 ]; then
+    title "PHP v7"
+    if [ "$(askUser "Install PHP v7")" -eq 1 ]; then
         sudo apt install -y php php-pear
         php -v
         
         breakLine
         title "Composer"
-        if [ "$(askUser "Install Composer package manager for PHP")" -eq 1 ]; then
+        if [ "$(askUser "Install Composer for PHP")" -eq 1 ]; then
             sudo curl -sS "https://getcomposer.org/installer" | sudo php -- --install-dir=/usr/local/bin --filename=composer
         fi
 
         breakLine
         title "Swoole"
-        if [ "$(askUser "Install Swoole asynchronous PHP framework")" -eq 1 ]; then
+        if [ "$(askUser "Install Swoole PHP framework")" -eq 1 ]; then
             sudo pecl install swoole -y
         fi
     fi
@@ -215,13 +189,13 @@ cNodeJs() {
 
         breakLine
         title "Bower"
-        if [ "$(askUser "Install Bower package manager")" -eq 1 ]; then
+        if [ "$(askUser "Install Bower")" -eq 1 ]; then
             sudo npm install -y bower -g
         fi
 
         breakLine
         title "Gulp"
-        if [ "$(askUser "Install Gulp pre-compiler")" -eq 1 ]; then
+        if [ "$(askUser "Install Gulp")" -eq 1 ]; then
             sudo npm install -y gulp -g
         fi
 
@@ -239,7 +213,7 @@ cNodeJs() {
 
         breakLine
         title "MeteorJS Library"
-        if [ "$(askUser "Install the MeteorJS SDK")" -eq 1 ]; then
+        if [ "$(askUser "Install MeteorJS SDK")" -eq 1 ]; then
             sudo curl "https://install.meteor.com/" | sh
         fi
 
@@ -251,7 +225,7 @@ cNodeJs() {
 
         breakLine
         title "React Library"
-        if [ "$(askUser "Install the React/Native SDKs")" -eq 1 ]; then
+        if [ "$(askUser "Install React/Native SDKs")" -eq 1 ]; then
             sudo npm install -y create-react-app create-react-native-app -g
         fi
 
@@ -266,7 +240,7 @@ cNodeJs() {
 
 cGit() {
     title "Git"
-    if [ "$(askUser "Install Git version control system")" -eq 1 ]; then
+    if [ "$(askUser "Install Git VCS")" -eq 1 ]; then
         sudo apt install -y git
     fi
     breakLine
@@ -274,7 +248,7 @@ cGit() {
 
 cDocker() {
     title "Docker"
-    if [ "$(askUser "Install Docker visualization environment")" -eq 1 ]; then
+    if [ "$(askUser "Install Docker")" -eq 1 ]; then
         sudo apt install -y docker-ce
     fi
     breakLine
@@ -282,7 +256,7 @@ cDocker() {
 
 cMySqlWorkbench() {
     title "MySQL Workbench"
-    if [ "$(askUser "Install MySQL Workbench database manager")" -eq 1 ]; then
+    if [ "$(askUser "Install MySQL Workbench")" -eq 1 ]; then
         sudo apt install -y mysql-workbench
     fi
     breakLine
@@ -291,14 +265,14 @@ cMySqlWorkbench() {
 cMongoDb() {
     title "MongoDB"
     if [ "$(askUser "Install MongoDB server")" -eq 1 ]; then
-        sudo apt install -y mongodb-org
+        sudo apt install -y mongodb mongo-tools mongodb-server
 
         breakLine
         title "RoboMongo (Robo3T)"
         if [ "$(askUser "Install RoboMongo database manager")" -eq 1 ]; then
             sudo apt install -y xcb
             cd /tmp
-            wget "https://download.robomongo.org/1.1.1/linux/robo3t-1.1.1-linux-x86_64-c93c6b0.tar.gz" -O robomongo.tar.gz
+            wget "https://download.robomongo.org/1.2.1/linux/robo3t-1.2.1-linux-x86_64-3e50a65.tar.gz" -O robomongo.tar.gz
 
             if [ -d ${ROBO_MONGO_PATH} ]; then
                 sudo rm -rf ${ROBO_MONGO_PATH}
@@ -341,8 +315,8 @@ cVsCodeIde() {
 }
 
 cPhpStormIde() {
-    title "PHP Storm (30 Day Trial) IDE"
-    if [ "$(askUser "Install PHP Storm (30 Day Trial) IDE")" -eq 1 ]; then
+    title "PHPStorm (30 Day Trial) IDE"
+    if [ "$(askUser "Install PHPStorm (30 Day Trial) IDE")" -eq 1 ]; then
         cd /tmp
         wget "https://download.jetbrains.com/webide/PhpStorm-2017.3.4.tar.gz" -O phpstorm.tar.gz
         sudo tar xf phpstorm.tar.gz
