@@ -143,17 +143,35 @@ cRepositories() {
 cUi() {
     title "Preparing the interface / applications"
     sudo apt dist-upgrade -y
-    sudo apt install -y  whoopsie language-pack-en-base nano mlocate htop preload inxi filezilla vlc bleachbit putty vim fish kiki atom xarchiver p7zip p7zip-rar
+    sudo apt install -y whoopsie language-pack-en-base nano mlocate htop preload inxi filezilla vlc bleachbit putty vim fish kiki atom xarchiver p7zip p7zip-rar
 
     sudo apt install -y software-center
     sudo apt install -y numix-icon-theme-circle moka-icon-theme
-
-    # Docky -
     sudo apt install -y docky
-
-    # Whisker Menu -
     sudo apt install -y xfce4-whiskermenu-plugin
     
+    local SOFTWARE_CENTER_LAUNCHER_PATH=/usr/share/applications/ubuntu-software-center.desktop
+
+    if [ ! -f ${SOFTWARE_CENTER_LAUNCHER_PATH} ]; then
+        sudo touch ${SOFTWARE_CENTER_LAUNCHER_PATH}
+    fi
+
+    sudo truncate --size 0 ${SOFTWARE_CENTER_LAUNCHER_PATH}
+    sudo echo "[Desktop Entry]" >> ${SOFTWARE_CENTER_LAUNCHER_PATH}
+    sudo echo "Name=Ubuntu Software Center" >> ${SOFTWARE_CENTER_LAUNCHER_PATH}
+    sudo echo "GenericName=Software Center" >> ${SOFTWARE_CENTER_LAUNCHER_PATH}
+    sudo echo "Comment=Lets you choose from thousands of applications available for Ubuntu" >> ${SOFTWARE_CENTER_LAUNCHER_PATH}
+    sudo echo "Exec=gksudo /usr/bin/software-center %u" >> ${SOFTWARE_CENTER_LAUNCHER_PATH}
+    sudo echo "Icon=softwarecenter" >> ${SOFTWARE_CENTER_LAUNCHER_PATH}
+    sudo echo "Terminal=false" >> ${SOFTWARE_CENTER_LAUNCHER_PATH}
+    sudo echo "Type=Application" >> ${SOFTWARE_CENTER_LAUNCHER_PATH}
+    sudo echo "Categories=PackageManager;GTK;System;Settings;" >> ${SOFTWARE_CENTER_LAUNCHER_PATH}
+    sudo echo "MimeType=application/x-deb;application/x-debian-package;x-scheme-handler/apt;" >> ${SOFTWARE_CENTER_LAUNCHER_PATH}
+    sudo echo "StartupNotify=true" >> ${SOFTWARE_CENTER_LAUNCHER_PATH}
+    sudo echo "X-Ubuntu-Gettext-Domain=software-center" >> ${SOFTWARE_CENTER_LAUNCHER_PATH}
+    sudo echo "X-Unity-IconBackgroundColor=#ffbf87" >> ${SOFTWARE_CENTER_LAUNCHER_PATH}
+    sudo echo "Keywords=Sources;PPA;Install;Uninstall;Remove;Purchase;Catalogue;Store;Apps;" >> ${SOFTWARE_CENTER_LAUNCHER_PATH}
+   
     cd /tmp
     wget "https://github.com/oguzhaninan/Stacer/releases/download/v1.0.8/Stacer_x64_v1.0.8.deb" -O stacer.deb
     sudo dpkg -i stacer.deb
