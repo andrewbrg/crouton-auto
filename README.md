@@ -1,5 +1,5 @@
 
-# Linux 16.04 (Xenial) dual OS on ChromeOS via Crouton
+# Linux 18.04 (Bionic) dual OS on ChromeOS via Crouton
 
 Download latest version here: [https://goo.gl/EYStRG](https://goo.gl/EYStRG) _(open->right click->save as)_
 
