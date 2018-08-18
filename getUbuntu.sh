@@ -185,6 +185,7 @@ cNodeJs() {
     if [ "$(askUser "Install NodeJS v9.0 environment")" -eq 1 ]; then
         curl -sL "https://deb.nodesource.com/setup_8.x" | sudo -E bash -
         sudo apt install -y build-essential nodejs
+        sudo npm install npm --global
         
         breakLine
         title "Vue CLI"
