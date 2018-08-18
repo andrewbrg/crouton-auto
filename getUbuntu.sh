@@ -181,35 +181,23 @@ cPhp() {
 }
 
 cNodeJs() {
-    title "NodeJS v9.0"
+    title "NodeJS v9.0 Environment"
     if [ "$(askUser "Install NodeJS v9.0 environment")" -eq 1 ]; then
         curl -sL "https://deb.nodesource.com/setup_9.x" | sudo -E bash -
         sudo apt install -y build-essential nodejs
+        
+        sudo npm install -y webpack -g
+        sudo npm install -y nodemon -g
+        sudo npm install -y gulp -g
+        sudo npm install -y bower -g
+        sudo npm install -y browserify -g
 
         breakLine
         title "Bower"
         if [ "$(askUser "Install Bower")" -eq 1 ]; then
-            sudo npm install -y bower -g
+            
         fi
-
-        breakLine
-        title "Gulp"
-        if [ "$(askUser "Install Gulp")" -eq 1 ]; then
-            sudo npm install -y gulp -g
-        fi
-
-        breakLine
-        title "Nodemon"
-        if [ "$(askUser "Install Nodemon deamon")" -eq 1 ]; then
-            sudo npm install -y nodemon -g
-        fi
-
-        breakLine
-        title "Browserify"
-        if [ "$(askUser "Install Browserify")" -eq 1 ]; then
-            sudo npm install -y browserify -g
-        fi
-
+        
         breakLine
         title "Vue CLI"
         if [ "$(askUser "Install Vue CLI SDK")" -eq 1 ]; then
