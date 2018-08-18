@@ -185,35 +185,24 @@ cNodeJs() {
     if [ "$(askUser "Install NodeJS v9.0 environment")" -eq 1 ]; then
         curl -sL "https://deb.nodesource.com/setup_9.x" | sudo -E bash -
         sudo apt install -y build-essential nodejs
-        
-        sudo npm install -y webpack -g
-        sudo npm install -y nodemon -g
-        sudo npm install -y gulp -g
-        sudo npm install -y bower -g
-        sudo npm install -y browserify -g
-
-        breakLine
-        title "Bower"
-        if [ "$(askUser "Install Bower")" -eq 1 ]; then
-            
-        fi
+        sudo npm install -g gulp
         
         breakLine
         title "Vue CLI"
         if [ "$(askUser "Install Vue CLI SDK")" -eq 1 ]; then
-            sudo npm install -y vue-cli -g
+            sudo npm install vue-cli -g
         fi
 
         breakLine
         title "React Native"
         if [ "$(askUser "Install React/Native SDKs")" -eq 1 ]; then
-            sudo npm install -y create-react-app create-react-native-app -g
+            sudo npm install create-react-app create-react-native-app -g
         fi
 
         breakLine
         title "AngularJS Framework"
         if [ "$(askUser "Install the Angular CLI, Service Worker & PWA tools framework")" -eq 1 ]; then
-            sudo npm install -y @angular/cli @angular/service-worker ng-pwa-tools -g
+            sudo npm install @angular/cli @angular/service-worker ng-pwa-tools -g
         fi
     fi
     breakLine
