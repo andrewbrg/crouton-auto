@@ -120,7 +120,6 @@ cPreRequisites() {
 cRepositories() {
     title "Setting up required repositories"
     sudo add-apt-repository -y ppa:numix/ppa
-    sudo add-apt-repository -y ppa:webupd8team/atom
     sudo add-apt-repository -y ppa:moka/daily
     sudo add-apt-repository -y ppa:docky-core/ppa
     sudo add-apt-repository -y ppa:gottcode/gcppa
@@ -140,7 +139,7 @@ cRepositories() {
 cUi() {
     title "Preparing the UI/Apps"
     sudo apt dist-upgrade -y
-    sudo apt install -y whoopsie language-pack-en-base nano mlocate htop preload inxi filezilla vlc bleachbit putty vim fish kiki atom xarchiver p7zip p7zip-rar
+    sudo apt install -y whoopsie language-pack-en-base nano mlocate htop preload inxi filezilla vlc bleachbit putty vim fish kiki xarchiver p7zip p7zip-rar
 
     sudo apt install -y numix-icon-theme-circle moka-icon-theme
     sudo apt install -y docky
@@ -182,7 +181,7 @@ cPhp() {
 }
 
 cNodeJs() {
-    title "NodeJS"
+    title "NodeJS v9.0"
     if [ "$(askUser "Install NodeJS v9.0 environment")" -eq 1 ]; then
         curl -sL "https://deb.nodesource.com/setup_9.x" | sudo -E bash -
         sudo apt install -y build-essential nodejs
@@ -212,19 +211,13 @@ cNodeJs() {
         fi
 
         breakLine
-        title "MeteorJS Library"
-        if [ "$(askUser "Install MeteorJS SDK")" -eq 1 ]; then
-            sudo curl "https://install.meteor.com/" | sh
-        fi
-
-        breakLine
-        title "Vue Library"
+        title "Vue CLI"
         if [ "$(askUser "Install Vue CLI SDK")" -eq 1 ]; then
             sudo npm install -y vue-cli -g
         fi
 
         breakLine
-        title "React Library"
+        title "React Native"
         if [ "$(askUser "Install React/Native SDKs")" -eq 1 ]; then
             sudo npm install -y create-react-app create-react-native-app -g
         fi
@@ -318,7 +311,7 @@ cPhpStormIde() {
     title "PHPStorm (30 Day Trial) IDE"
     if [ "$(askUser "Install PHPStorm (30 Day Trial) IDE")" -eq 1 ]; then
         cd /tmp
-        wget "https://download.jetbrains.com/webide/PhpStorm-2017.3.4.tar.gz" -O phpstorm.tar.gz
+        wget "https://download.jetbrains.com/webide/PhpStorm-2018.2.1.tar.gz" -O phpstorm.tar.gz
         sudo tar xf phpstorm.tar.gz
 
         if [ -d ${PHPSTORM_PATH} ]; then
