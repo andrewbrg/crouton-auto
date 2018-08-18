@@ -181,11 +181,10 @@ cPhp() {
 }
 
 cNodeJs() {
-    title "NodeJS v9.0 Environment"
+    title "NodeJS v8 LTS Environment"
     if [ "$(askUser "Install NodeJS v9.0 environment")" -eq 1 ]; then
-        curl -sL "https://deb.nodesource.com/setup_9.x" | sudo -E bash -
+        curl -sL "https://deb.nodesource.com/setup_8.x" | sudo -E bash -
         sudo apt install -y build-essential nodejs
-        sudo npm install -g gulp
         
         breakLine
         title "Vue CLI"
