@@ -1,6 +1,12 @@
 
 # Linux 18.04 (Bionic) dual OS on ChromeOS via Crouton
 
+**Important**
+
+Crouton has been replaced by stock Crostini, if you are using that (and should be) then refer to this: https://github.com/andrewbrg/deb9-dev-machine
+
+Otherwise;
+
 Download latest version here: [https://goo.gl/EYStRG](https://goo.gl/EYStRG) _(open->right click->save as)_
 
 This is a handy script to automatically set up an Ubuntu dev machine on your chromebook. The Ubuntu will be installed in a chroot along with your current Chrome operating system _(you can run two operating systems in parallel)_. The Crouton project is developed/maintained by David Schneider @ https://github.com/dnschneid  
