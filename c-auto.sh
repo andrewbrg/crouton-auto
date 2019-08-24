@@ -85,15 +85,15 @@ configure() {
   
     title "Preparing UI";
       sudo apt install -y cinnamon \
-                          whoopsie \
                           language-pack-en-base \
+                          numix-icon-theme-circle \
+                          moka-icon-theme \
+                          whoopsie \
                           mlocate \
                           preload \
                           xarchiver \
                           p7zip \
-                          p7zip-rar \
-                          numix-icon-theme-circle \
-                          moka-icon-theme;
+                          p7zip-rar;
     breakLine;
     
     title "Setting Home Permissions";
