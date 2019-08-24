@@ -1,5 +1,5 @@
 
-# Linux 18.04 (Bionic) dual OS on ChromeOS via Crouton
+# Linux dual OS on ChromeOS via Crouton
 
 **Important**
 
