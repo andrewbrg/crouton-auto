@@ -39,21 +39,21 @@ After placing your Chromebook into developer mode, launch a crosh terminal by hi
 
 ```shell
 shell  
-sudo sh ~/Downloads/getUbuntu.sh
+sudo sh ~/Downloads/c-auto.sh
 ```
 
 After the installation is complete you can launch Ubuntu by opening a crosh terminal `CTRL+ALT+T` and executing:
 
 ```shell
 shell  
-sudo startxfce4
+sudo startcinnamon
 ```
 
 If you want to be able to close the crosh terminal without Ubuntu un-mounting itself as a consequence use the following:
 
 ```shell
 shell
-sudo startxfce4 -b
+sudo startcinnamon -b
 ```
 
 To switch between operating systems hit `CTRL+ALT+SHIFT+FORWARD` or `CTRL+ALT+SHIFT+BACKWARDS`.
@@ -68,5 +68,5 @@ If you want to run a full update of the Ubuntu installation in your chroot or yo
 
 ```shell
 shell
-sudo sh ~/Downloads/getUbuntu.sh -u
+sudo sh ~/Downloads/c-auto
 ```
