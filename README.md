@@ -9,7 +9,7 @@ Otherwise;
 
 Download latest version here: [https://goo.gl/EYStRG](https://goo.gl/EYStRG) _(open->right click->save as)_
 
-This is a handy script to automatically set up an Ubuntu dev machine on your chromebook. The Ubuntu will be installed in a chroot along with your current Chrome operating system _(you can run two operating systems in parallel)_. The Crouton project is developed/maintained by David Schneider @ https://github.com/dnschneid  
+This is a handy script to automatically set up a Linux Debian dev machine on your chromebook. The distor will be installed in a chroot along with your current Chrome operating system _(you can run two operating systems in parallel)_. The Crouton project is developed/maintained by David Schneider @ https://github.com/dnschneid  
 
 **This script is made for AMD64 processors**, if you have an ARM processor some packages will not function. Fully tested on Acer Chromebook 14.
 
@@ -42,14 +42,14 @@ shell
 sudo sh ~/Downloads/c-auto.sh
 ```
 
-After the installation is complete you can launch Ubuntu by opening a crosh terminal `CTRL+ALT+T` and executing:
+After the installation is complete you can launch linux by opening a crosh terminal `CTRL+ALT+T` and executing:
 
 ```shell
 shell  
 sudo startcinnamon
 ```
 
-If you want to be able to close the crosh terminal without Ubuntu un-mounting itself as a consequence use the following:
+If you want to be able to close the crosh terminal without linux un-mounting itself as a consequence use the following:
 
 ```shell
 shell
@@ -58,13 +58,13 @@ sudo startcinnamon -b
 
 To switch between operating systems hit `CTRL+ALT+SHIFT+FORWARD` or `CTRL+ALT+SHIFT+BACKWARDS`.
 
-It's important to logout from Ubuntu once before powering down your system to avoid potential corruption to the mounted root.
+It's important to logout from linux once before powering down your system to avoid potential corruption to the mounted root.
 
 ## Updating your chroot
 
-**I've updated ChromeOS and Ubuntu is acting up**
+**I've updated ChromeOS and my distro is acting up**
 
-If you want to run a full update of the Ubuntu installation in your chroot or you've updated ChromeOS and Ubuntu is not working properly anymore then run the following from crosh
+If you want to run a full update of the linux installation in your chroot or you've updated ChromeOS and linux is not working properly anymore then run the following from crosh:
 
 ```shell
 shell
