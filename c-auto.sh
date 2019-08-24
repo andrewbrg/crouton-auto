@@ -1,6 +1,6 @@
 #!/bin/bash
 DISTRO=buster;
-TARGETS=cli-extra,xorg,xiwi,extension,keyboard,audio,chrome,cinnamon;
+TARGETS=cli-extra,xorg,xiwi,extension,keyboard,audio,chrome;
 
 SELF_NAME=`basename $0`;
 INODE_NUM=`ls -id / | awk '{print $1}'`;
@@ -79,11 +79,13 @@ configure() {
     title "Updating Repositories";
       sudo add-apt-repository -y ppa:numix/ppa;
       sudo add-apt-repository -y ppa:moka/daily;
+      sudo add-apt-repository -y ppa:gwendal-lebihan-dev/cinnamon-stable;
       sudo apt update -y;
     breakLine;
   
     title "Preparing UI";
-      sudo apt install -y whoopsie \
+      sudo apt install -y cinnamon \
+                          whoopsie \
                           language-pack-en-base \
                           mlocate \
                           preload \
@@ -113,8 +115,15 @@ configure() {
       sudo apt install -y wget;
       bash <(wget -qO- "https://raw.githubusercontent.com/andrewbrg/deb9-dev-machine/master/setup.sh");
     breakLine;
+    
+    wget "https://gist.github.com/sohjsolwin/5934362/raw/f68fc0942798902a0bd48f40c17dc0cd5cf585ea/startcinnamon";
+    sudo chmod +x startcinnamon;
   fi
+  
   exit;
+  
+  cd ${DOWNLOADS_PATH};
+  sudo mv ./startcinnamon "/usr/local/bin";
 }
 
 update() {
