@@ -9,11 +9,13 @@ Otherwise;
 
 Download latest version [here](https://raw.githubusercontent.com/andrewbrg/crouton-auto/master/c-auto.sh): _(open->right click->save as)_
 
-This is a handy script to automatically set up a Linux Debian dev machine on your chromebook. The distor will be installed in a chroot along with your current Chrome operating system _(you can run two operating systems in parallel)_. The Crouton project is developed/maintained by David Schneider @ https://github.com/dnschneid  
+This is a handy script to automatically set up a Linux Debian dev machine on your chromebook. The disto will be installed in a chroot along with your current Chrome operating system _(you can run two operating systems in parallel)_. The Crouton project is developed/maintained by David Schneider @ https://github.com/dnschneid  
 
-**This script is made for AMD64 processors**, if you have an ARM processor some packages will not function. Fully tested on Acer Chromebook 14.
+**This script is made for AMD64 processors**, if you have an ARM processor some packages will not function. Fully tested on Acer Chromebook 14 and Acer Spin 13.
 
-Your Chromebook must be in developer mode in order to use this script. It is also highly recommended that you install the crouton chrome extension for added functionality including a shared clipboard between operating systems. You may get the latest version directly from the [chrome store](https://chrome.google.com/webstore/detail/crouton-integration/gcpneefbbnfalgjniomfjknbcgkbijom)
+Your Chromebook must be in developer mode in order to use this script. 
+
+It is also highly recommended that you install the crouton chrome extension for added functionality including a shared clipboard between operating systems. You may get the latest version directly from the [chrome store](https://chrome.google.com/webstore/detail/crouton-integration/gcpneefbbnfalgjniomfjknbcgkbijom)
 
 **Resources to check out** 
 
@@ -42,14 +44,14 @@ shell
 sudo sh ~/Downloads/c-auto.sh
 ```
 
-After the installation is complete you can launch linux by opening a crosh terminal `CTRL+ALT+T` and executing:
+After the installation is complete you can launch Debian by opening a crosh terminal `CTRL+ALT+T` and executing:
 
 ```shell
 shell  
 sudo startcinnamon
 ```
 
-If you want to be able to close the crosh terminal without linux un-mounting itself as a consequence use the following:
+If you want to be able to close the crosh terminal without Debian un-mounting itself as a consequence use the following:
 
 ```shell
 shell
@@ -64,7 +66,7 @@ It's important to logout from linux once before powering down your system to avo
 
 **I've updated ChromeOS and my distro is acting up**
 
-If you want to run a full update of the linux installation in your chroot or you've updated ChromeOS and linux is not working properly anymore then run the following from crosh:
+If you want to run a full update of the Debian installation in your chroot or you've updated ChromeOS and linux is not working properly anymore then run the following from crosh and choose the 'u' option:
 
 ```shell
 shell
