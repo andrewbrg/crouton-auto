@@ -7,7 +7,7 @@ Crouton has been replaced by stock Crostini, if you are using that (and should b
 
 Otherwise;
 
-Download latest version [here]("https://raw.githubusercontent.com/andrewbrg/crouton-auto/master/c-auto.sh"): _(open->right click->save as)_
+Download latest version [here](https://raw.githubusercontent.com/andrewbrg/crouton-auto/master/c-auto.sh): _(open->right click->save as)_
 
 This is a handy script to automatically set up a Linux Debian dev machine on your chromebook. The distor will be installed in a chroot along with your current Chrome operating system _(you can run two operating systems in parallel)_. The Crouton project is developed/maintained by David Schneider @ https://github.com/dnschneid  
 
